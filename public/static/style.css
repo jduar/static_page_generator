@@ -1,0 +1,58 @@
+body {
+    padding: 10px 20px 10px 20px;
+
+}
+.pages {
+    width: 22%;
+}
+
+.pages a {
+    text-decoration: none;
+}
+
+.horizontal {
+    display: flex;
+    flex-direction: row;
+}
+
+.container {
+    color: rgb(102, 101, 101);
+}
+
+.title {
+    padding-top: 20px;
+    padding-bottom: 30px;
+    font-size: 1.5em;
+}
+
+a {
+    color: rgb(104, 104, 104);
+}
+
+a:hover, a:focus {
+    color: lightslategrey;
+}
+
+@media screen and (max-width: 900px) {
+    .pages {
+        width: 100%;
+        flex-direction: row;
+    }
+
+    .blank {
+        display: none;
+    }
+
+    .container {
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+
+    .content {
+        width: 100%;
+    }
+
+    .horizontal {
+        flex-direction: column;
+    }
+}
