@@ -2,7 +2,10 @@ body {
     padding: 10px 20px 10px 20px;
 
 }
+
 .pages {
+    display: flex;
+    flex-direction: column;
     width: 22%;
 }
 
@@ -37,6 +40,10 @@ a:hover, a:focus {
     .pages {
         width: 100%;
         flex-direction: row;
+    }
+
+    .pages a {
+        padding: 10px;
     }
 
     .blank {
