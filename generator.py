@@ -24,14 +24,14 @@ class SiteGenerator():
     def copy_static(self):
         shutil.copytree("template/static", "public/static")
 
-    def render_page(self, page_title: str, page_content: str, pages: List[Dict]):
+    def render_page(self, title: str, content: str, pages: List[Dict], images: bool = False):
         template = self.env.get_template("_layout.html")
 
-        page_link = f"public/{page_title}.html"
-        page_content = {"title": page_title, "link": page_link, "text": page_content}
+        link = f"public/{title}.html"
+        page = {"title": title, "link": link, "content": content}
 
-        with open(page_link, "w+") as file:
-            html = template.render(pages=pages, page_content=page_content)
+        with open(link, "w+") as file:
+            html = template.render(pages=pages, page=page)
             file.write(html)
 
     def render_content(self):
