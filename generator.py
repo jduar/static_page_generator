@@ -34,16 +34,24 @@ class SiteGenerator():
             html = template.render(pages=pages, page=page)
             file.write(html)
 
+    def render_images(self, image_paths: List[str]):
+        template = self.env.get_template("images.html")
+        return template.render(images=image_paths)
+
     def render_content(self):
-        pagepaths: List[Path] = [Path("pages") / path for path in os.listdir("pages")]
+        text_paths = [Path("pages") / path for path in next(os.walk('pages'))[2]]
+        image_paths = [Path("images") / path for path in next(os.walk('images'))[1]]
 
-        pages = [path.stem for path in pagepaths if path.stem != "index"]
+        pages = [path.stem for path in (text_paths + image_paths) if path.stem != "index"]
 
-        for path in pagepaths:
+        for path in text_paths:
             with open(path, "r") as file:
                 content = file.read()
             html_content = markdown.markdown(content, output_format="html5")
             self.render_page(path.stem, html_content, pages)
+        for path in image_paths:
+            image_paths = [Path(path, image) for image in os.listdir(path)]
+            self.render_page(path.stem, self.render_images(image_paths), pages)
 
 
 if __name__ == "__main__":
