@@ -27,12 +27,6 @@ li {
     column-count: 3;
 }
 
-.picture {
-    padding-bottom: .4em;
-    padding-right: .2em;
-    padding-left: .2em;
-}
-
 .horizontal {
     display: flex;
     flex-direction: row;
