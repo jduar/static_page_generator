@@ -2,23 +2,27 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>{{ page_content.title }}</title>
+    <title>{{ page.title }}</title>
     <link rel="stylesheet" href="static/style.css" />
   </head>
   <body>
     <div class="horizontal">
       <div class="pages title">
-        <a href="/">jduarte.xyz</a>        
+        <a href="/">jduarte.xyz</a>
       </div>
     </div>
     <div class="horizontal">
       <div class="pages">
-        {% for page in pages %}
-          <a href="{{ page }}">{{ page }}</a>
-        {% endfor %}
+        <ul>
+          {% for page in pages %}
+            <li>
+              <a href="{{ page }}">{{ page }}</a>
+            </li>
+          {% endfor %}
+        </ul>
       </div>
       <div class="container content">
-        {{ page_content.text }}
+        {{ page.content }}
       </div>
     </div>
   </body>
