@@ -1,6 +1,7 @@
 body {
     padding: 10px 20px 10px 20px;
-
+    background-color: #f5f5f5;
+    font-family: 'Courier New', monospace, Helvetica, verdana, sans-serif;
 }
 
 ul {
@@ -10,7 +11,7 @@ ul {
 
 li {
     list-style-type: none;
-    padding-bottom: .2em;
+    padding-bottom: .5em;
 }
 
 .pages {
@@ -33,7 +34,7 @@ li {
 }
 
 .container {
-    color: rgb(102, 101, 101);
+    color: rgb(95, 95, 95);
 }
 
 .title {
@@ -47,7 +48,7 @@ a {
 }
 
 a:hover, a:focus {
-    color: lightslategrey;
+    color: rgb(138, 178, 218);
 }
 
 @media screen and (max-width: 900px) {
@@ -70,7 +71,8 @@ a:hover, a:focus {
     }
 
     .content {
-        width: 100%;
+
+        width: 78%;
     }
 
     .horizontal {
