@@ -37,6 +37,10 @@ li {
     color: rgb(95, 95, 95);
 }
 
+.content {
+    width: 78%;
+}
+
 .title {
     padding-top: 20px;
     padding-bottom: 30px;
@@ -49,6 +53,10 @@ a {
 
 a:hover, a:focus {
     color: rgb(138, 178, 218);
+}
+
+img {
+    width: 100%;
 }
 
 @media screen and (max-width: 900px) {
