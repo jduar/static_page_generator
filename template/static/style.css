@@ -57,6 +57,7 @@ a:hover, a:focus {
 
 img {
     width: 100%;
+    margin-bottom: 0.8em;
 }
 
 @media screen and (max-width: 900px) {
@@ -84,5 +85,9 @@ img {
 
     .horizontal {
         flex-direction: column;
+    }
+
+    .pictures {
+        column-count: 1;
     }
 }
