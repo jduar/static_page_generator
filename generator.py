@@ -10,7 +10,7 @@ from jinja2 import Environment, FileSystemLoader
 from utils.sorters import sort_images
 
 
-class SiteGenerator():
+class SiteGenerator:
     def __init__(self):
         self.env = Environment(loader=FileSystemLoader("template"))
         self.cleanup()
@@ -42,10 +42,12 @@ class SiteGenerator():
         return template.render(images=image_paths)
 
     def render_content(self):
-        text_paths = [Path("pages") / path for path in next(os.walk('pages'))[2]]
-        image_dirs = [Path("images") / path for path in next(os.walk('images'))[1]]
+        text_paths = [Path("pages") / path for path in next(os.walk("pages"))[2]]
+        image_dirs = [Path("images") / path for path in next(os.walk("images"))[1]]
 
-        pages = [path.stem for path in (text_paths + image_dirs) if path.stem != "index"]
+        pages = [
+            path.stem for path in (text_paths + image_dirs) if path.stem != "index"
+        ]
 
         for path in text_paths:
             with open(path, "r") as file:
@@ -54,7 +56,6 @@ class SiteGenerator():
             self.render_page(path.stem, html_content, pages)
 
         for dir_path in image_dirs:
-            print(dir_path)
             image_paths = [Path(dir_path, image) for image in os.listdir(dir_path)]
             self.render_page(dir_path.stem, self.render_images(image_paths), pages)
 

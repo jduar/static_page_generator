@@ -9,7 +9,7 @@ def exif_data(image_paths: List[Path], *args):
     for path in image_paths:
         image_exif = {}
         image_exif["path"] = path
-        with open(path, 'rb') as img_file:
+        with open(path, "rb") as img_file:
             for arg in args:
                 try:
                     image_exif[arg] = getattr(Image(img_file), arg)
