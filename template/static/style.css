@@ -70,6 +70,14 @@ img {
         padding: 10px;
     }
 
+    .pages ul {
+        list-style: none;
+    }
+
+    .pages li {
+        float: left;
+    }
+
     .blank {
         display: none;
     }
