@@ -19,8 +19,15 @@ class SiteGenerator:
         print(" * Successfully generated site.")
 
     def cleanup(self):
-        shutil.rmtree("./public")
-        os.mkdir("./public")
+        public = Path('public')
+        if public.is_dir():
+            for path in public.glob('*'):
+                if path.is_dir():
+                    shutil.rmtree(path)
+                else:
+                    os.remove(path)
+        else:
+            os.mkdir("./public")
 
     def copy_static(self):
         shutil.copytree("template/static", "public/static")
