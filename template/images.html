@@ -1,5 +1,7 @@
 <div class="pictures">
   {% for image in images %}
-    <img src={{ image }}>
+    <a href={{ image }} target="_blank">
+      <img src={{ image }}>
+    </a>
   {% endfor %}
 </div>
