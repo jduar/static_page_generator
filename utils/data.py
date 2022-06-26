@@ -1,8 +1,11 @@
+from collections import defaultdict, namedtuple
 from pathlib import Path
-from typing import List
+from typing import Dict, List
 
 from exif import Image
 from iptcinfo3 import IPTCInfo
+
+ImageData = namedtuple("ImageData", ["path", "keywords"])
 
 
 def exif_data(image_paths: List[Path], *args):
@@ -21,9 +24,19 @@ def exif_data(image_paths: List[Path], *args):
     return images_data
 
 
-def keywords_data(image_paths: List[Path]):
-    return [image_keywords(path) for path in image_paths]
+def image_by_keywords(image_paths: List[Path]) -> Dict:
+    keywords_data = image_keywords(image_paths)
+    keyword_images = defaultdict(list)
+    for image_data in keywords_data:
+        for keyword in image_data.keywords:
+            keyword_images[keyword].append(image_data.path)
+    return keyword_images
 
 
-def image_keywords(path: Path):
-    return {"path": path, "keywords": IPTCInfo(path).get("keywords", None)}
+def image_keywords(image_paths: List[Path]) -> List[ImageData]:
+    return [
+        ImageData(
+            path, [keyword.decode("utf-8") for keyword in IPTCInfo(path)["keywords"]]
+        )
+        for path in image_paths
+    ]

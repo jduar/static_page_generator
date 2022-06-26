@@ -8,7 +8,10 @@ from typing import Dict, List
 import markdown
 from jinja2 import Environment, FileSystemLoader
 from utils.sorters import sort_images
-from utils.data import keywords_data
+from utils.data import image_by_keywords
+
+
+DEFAULT_IMAGE_PATH = "images/pictures"
 
 
 class SiteGenerator:
@@ -33,14 +36,18 @@ class SiteGenerator:
     def copy_static(self):
         shutil.copytree("template/static", "public/static")
 
-    def render_page(self, title: str, content: str, pages: List[Dict]):
+    def render_page(
+        self, title: str, content: str, text_pages: List[Dict], image_pages: List[Dict]
+    ):
         template = self.env.get_template("_layout.html")
 
         link = f"public/{title}.html"
         page = {"title": title, "link": link, "content": content}
 
         with open(link, "w+") as file:
-            html = template.render(pages=pages, page=page)
+            html = template.render(
+                text_pages=text_pages, image_pages=image_pages, page=page
+            )
             file.write(html)
 
     def render_images(self, image_paths: List[str], sorting: str = None):
@@ -50,22 +57,34 @@ class SiteGenerator:
         return template.render(images=image_paths)
 
     def render_content(self):
-        text_paths = [Path("pages") / path for path in next(os.walk("pages"))[2]]
-        image_dirs = [Path("images") / path for path in next(os.walk("images"))[1]]
+        image_sections = image_by_keywords(
+            [
+                Path(DEFAULT_IMAGE_PATH, image)
+                for image in os.listdir(DEFAULT_IMAGE_PATH)
+            ]
+        )
+        text_paths = self.text_paths()
 
-        pages = [
-            path.stem for path in (text_paths + image_dirs) if path.stem != "index"
-        ]
+        text_page_names = [path.stem for path in text_paths if path.stem != "index"]
+        image_page_names = image_sections.keys()
 
         for path in text_paths:
             with open(path, "r") as file:
                 content = file.read()
             html_content = markdown.markdown(content, output_format="html5")
-            self.render_page(path.stem, html_content, pages)
+            self.render_page(path.stem, html_content, text_page_names, image_page_names)
 
-        for dir_path in image_dirs:
-            image_paths = [Path(dir_path, image) for image in os.listdir(dir_path)]
-            self.render_page(dir_path.stem, self.render_images(image_paths), pages)
+        for section in image_sections:
+            self.render_page(
+                section,
+                self.render_images(image_sections[section]),
+                text_page_names,
+                image_page_names,
+            )
+
+    def text_paths(self) -> List[Path]:
+        """Returns list of text page paths."""
+        return [Path("pages") / path for path in next(os.walk("pages"))[2]]
 
 
 if __name__ == "__main__":
