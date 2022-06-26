@@ -14,7 +14,13 @@
     <div class="horizontal">
       <div class="pages">
         <ul>
-          {% for page in pages %}
+          {% for page in text_pages %}
+            <li>
+              <a href="{{ page }}">{{ page }}</a>
+            </li>
+          {% endfor %}
+          &nbsp;
+          {% for page in image_pages %}
             <li>
               <a href="{{ page }}">{{ page }}</a>
             </li>
