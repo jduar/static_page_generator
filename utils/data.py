@@ -2,6 +2,7 @@ from pathlib import Path
 from typing import List
 
 from exif import Image
+from iptcinfo3 import IPTCInfo
 
 
 def exif_data(image_paths: List[Path], *args):
@@ -18,3 +19,11 @@ def exif_data(image_paths: List[Path], *args):
                     return
         images_data.append(image_exif)
     return images_data
+
+
+def keywords_data(image_paths: List[Path]):
+    return [image_keywords(path) for path in image_paths]
+
+
+def image_keywords(path: Path):
+    return {"path": path, "keywords": IPTCInfo(path).get("keywords", None)}

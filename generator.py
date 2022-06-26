@@ -8,6 +8,7 @@ from typing import Dict, List
 import markdown
 from jinja2 import Environment, FileSystemLoader
 from utils.sorters import sort_images
+from utils.data import keywords_data
 
 
 class SiteGenerator:
@@ -19,9 +20,9 @@ class SiteGenerator:
         print(" * Successfully generated site.")
 
     def cleanup(self):
-        public = Path('public')
+        public = Path("public")
         if public.is_dir():
-            for path in public.glob('*'):
+            for path in public.glob("*"):
                 if path.is_dir():
                     shutil.rmtree(path)
                 else:
