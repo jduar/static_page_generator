@@ -8,7 +8,7 @@ from typing import Dict, List
 import markdown
 from jinja2 import Environment, FileSystemLoader
 from utils.sorters import sort_images
-from utils.data import image_by_keywords
+from utils.data import images_per_keyword
 
 
 DEFAULT_IMAGE_PATH = "images/pictures"
@@ -57,7 +57,7 @@ class SiteGenerator:
         return template.render(images=image_paths)
 
     def render_content(self):
-        image_sections = image_by_keywords(
+        image_sections = images_per_keyword(
             [
                 Path(DEFAULT_IMAGE_PATH, image)
                 for image in os.listdir(DEFAULT_IMAGE_PATH)
