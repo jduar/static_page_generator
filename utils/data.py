@@ -5,7 +5,7 @@ from typing import Dict, List
 from exif import Image
 from iptcinfo3 import IPTCInfo
 
-import config
+import settings
 
 ImageData = namedtuple("ImageData", ["path", "keywords"])
 
@@ -35,10 +35,10 @@ def images_per_keyword(image_paths: List[Path]) -> Dict:
 
 
 def categories(keywords: List[str]) -> List[str]:
-    if not config.USE_CATEGORIES or not config.CATEGORIES:
+    if not settings.USE_CATEGORIES or not settings.CATEGORIES:
         return keywords
     else:
-        return [keyword for keyword in keywords if keyword in config.CATEGORIES]
+        return [keyword for keyword in keywords if keyword in settings.CATEGORIES]
 
 
 def image_data(image_paths: List[Path]) -> List[ImageData]:
