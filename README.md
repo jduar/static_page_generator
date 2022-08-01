@@ -2,11 +2,15 @@
 
 This is a static page generator.
 
-I initially only wanted to create a simple website. Most of the tools I work with are overkill for a static website and I didn't feel like copying HTML over to a bunch of places.
+I initially only wanted to create a simple website. Most of the tools I work with are overkill for a static website and I didn't feel like hand writing and copying HTML code a bunch of times.
 
-I could technically learn how to use one of the many available static website generating tools, but I felt like the concept itself seemed simple enough, so I might aswell do it myself.
+I could technically learn how to use one of the many available static website generating tools, but I felt like the concept itself seemed simple enough that I might aswell do it myself.
 
 So here it is. By this point, I can't even remember exactly what I wanted to create a website for, but whatever it might be, this tool aims to help me do that.
+
+[UPDATE AUGUST 2022]
+
+By this point, this is less of a generic static page generator and more of static picture gallery website generator. It is what it is.
 
 ## Functionality
 
