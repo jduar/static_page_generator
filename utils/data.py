@@ -5,6 +5,8 @@ from typing import Dict, List
 from exif import Image
 from iptcinfo3 import IPTCInfo
 
+import config
+
 ImageData = namedtuple("ImageData", ["path", "keywords"])
 
 
@@ -24,16 +26,22 @@ def exif_data(image_paths: List[Path], *args):
     return images_data
 
 
-def image_by_keywords(image_paths: List[Path]) -> Dict:
-    keywords_data = image_keywords(image_paths)
+def images_per_keyword(image_paths: List[Path]) -> Dict:
     keyword_images = defaultdict(list)
-    for image_data in keywords_data:
-        for keyword in image_data.keywords:
-            keyword_images[keyword].append(image_data.path)
+    for image in image_data(image_paths):
+        for keyword in categories(image.keywords):
+            keyword_images[keyword].append(image.path)
     return keyword_images
 
 
-def image_keywords(image_paths: List[Path]) -> List[ImageData]:
+def categories(keywords: List[str]) -> List[str]:
+    if not config.USE_CATEGORIES or not config.CATEGORIES:
+        return keywords
+    else:
+        return [keyword for keyword in keywords if keyword in config.CATEGORIES]
+
+
+def image_data(image_paths: List[Path]) -> List[ImageData]:
     return [
         ImageData(
             path, [keyword.decode("utf-8") for keyword in IPTCInfo(path)["keywords"]]
