@@ -18,7 +18,7 @@ At this stage, the script has two generating behaviours for pages focused on tex
 
 In order to have text sections, create a `pages` directory at the root directory. Any markdown document palced inside will be converted to HTML and its name will be used as a section name.
 
-In order to have image gallery sections, create a `images` directory at the root directory. Any directory inside it with groups of images will be rendered into a section with an image gallery.
+In order to have image gallery sections, create a `images\pictures` directory structure at the root directory. All pictures within it will be separated into sections by their keyword data.
 
 There is a base layout template and CSS styling inside `template`.
 
@@ -28,9 +28,7 @@ I might make all of this structure less "mandatory" in the future. It could mayb
 
 We'll see.
 
-You also currently need a `index.md` page aswell. That should probably be changed aswell.
-
-Running the docker container than sets up an nginx server with the pages you've just generated.
+Running the docker container then sets up an nginx server with the pages you've just generated.
 
 ## Development
 

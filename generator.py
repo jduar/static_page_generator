@@ -7,7 +7,7 @@ from typing import Dict, List
 
 import markdown
 from jinja2 import Environment, FileSystemLoader
-from utils.sorters import sort_images
+from utils.sorters import sort_images, OrderMethod
 from utils.data import images_per_keyword
 
 
@@ -56,23 +56,44 @@ class SiteGenerator:
         template = self.env.get_template("images.html")
         return template.render(images=image_paths)
 
+    def render_index(
+        self, text_pages: List[Dict], image_pages: List[Dict], image_paths: List[str]
+    ):
+        template = self.env.get_template("_layout.html")
+
+        link = "public/index.html"
+        page = {
+            "title": "index",
+            "link": link,
+            "content": self.render_images(image_paths, sorting=OrderMethod.DATE),
+        }
+
+        with open(link, "w+") as file:
+            html = template.render(
+                text_pages=text_pages, image_pages=image_pages, page=page
+            )
+            file.write(html)
+
     def render_content(self):
-        image_sections = images_per_keyword(
-            [
-                Path(DEFAULT_IMAGE_PATH, image)
-                for image in os.listdir(DEFAULT_IMAGE_PATH)
-            ]
-        )
+        image_paths = [
+            Path(DEFAULT_IMAGE_PATH, image) for image in os.listdir(DEFAULT_IMAGE_PATH)
+        ]
+        image_sections = images_per_keyword(image_paths)
         text_paths = self.text_paths()
 
         text_page_names = [path.stem for path in text_paths if path.stem != "index"]
         image_page_names = image_sections.keys()
 
         for path in text_paths:
-            with open(path, "r") as file:
-                content = file.read()
-            html_content = markdown.markdown(content, output_format="html5")
-            self.render_page(path.stem, html_content, text_page_names, image_page_names)
+            if path.stem == "index":
+                self.render_index(text_page_names, image_page_names, image_paths)
+            else:
+                with open(path, "r") as file:
+                    content = file.read()
+                html_content = markdown.markdown(content, output_format="html5")
+                self.render_page(
+                    path.stem, html_content, text_page_names, image_page_names
+                )
 
         for section in image_sections:
             self.render_page(
