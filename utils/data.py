@@ -20,7 +20,7 @@ def exif_data(image_paths: List[Path], *args):
                 try:
                     image_exif[arg] = getattr(Image(img_file), arg)
                 except (AttributeError, KeyError):
-                    print(f" * This image doesn't have the exif info {arg}")
+                    print(f" * This image ({path}) doesn't have the exif info {arg}")
                     return
         images_data.append(image_exif)
     return images_data
