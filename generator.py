@@ -61,7 +61,6 @@ class SiteGenerator:
         return template.render(images=image_paths)
 
     def render_content(self):
-        # image_sections = images_per_keyword(self.image_paths)
         for path in self.text_paths:
             if path.stem == "index":
                 self.render_page(title="index", content=self.render_images(self.image_paths, sorting=OrderMethod.DATE))
