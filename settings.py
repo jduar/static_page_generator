@@ -1,0 +1,2 @@
+USE_CATEGORIES = False
+CATEGORIES = []
