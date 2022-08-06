@@ -25,7 +25,7 @@ def date_sort(image_paths: List[Path]):
     if image_dates:
         return [
             image_data["path"]
-            for image_data in sorted(image_dates, key=lambda x: x["datetime_original"])
+            for image_data in sorted(image_dates, key=lambda x: x["datetime_original"], reverse=True)
         ]
     else:
         print(
