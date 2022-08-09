@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="horizontal">
+    <div class="pages title">
+      <a href="/">jduarte.xyz</a>
+    </div>
+  </div>
+  <div class="horizontal">
+    <div class="pages">
+      <ul>
+        {% for page in text_pages %}
+        <li>
+          <a href="{{ page }}">{{ page }}</a>
+        </li>
+        {% endfor %} &nbsp; {% for page in image_pages %}
+        <li>
+          <a href="{{ page }}">{{ page }}</a>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="container content">{{ page.content }}</div>
+  </div>
+{% endblock %}
