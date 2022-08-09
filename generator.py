@@ -54,16 +54,20 @@ class SiteGenerator:
             )
             file.write(html)
 
-    def render_images(self, image_paths: List[str], sorting: str = None):
+    def render_gallery(self, image_paths: List[str], sorting: str = None):
         if sorting:
             image_paths = sort_images(image_paths, sorting)
+        # TODO: For each photo, render a photo page with the photo and details.
         template = self.env.get_template("gallery.html")
         return template.render(images=image_paths)
+
+    def render_image_page(self):
+        pass
 
     def render_content(self):
         for path in self.text_paths:
             if path.stem == "index":
-                self.render_page(title="index", content=self.render_images(self.image_paths, sorting=OrderMethod.DATE))
+                self.render_page(title="index", content=self.render_gallery(self.image_paths, sorting=OrderMethod.DATE))
             else:
                 with open(path, "r") as file:
                     content = file.read()
@@ -71,7 +75,7 @@ class SiteGenerator:
                 self.render_page(path.stem, html_content)
 
         for section in self.image_sections:
-            self.render_page(section, self.render_images(self.image_sections[section]))
+            self.render_page(section, self.render_gallery(self.image_sections[section]))
 
     def text_paths(self) -> List[Path]:
         """Returns list of text page paths."""
