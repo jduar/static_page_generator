@@ -47,17 +47,24 @@ li {
     font-size: 1.5em;
 }
 
+.image {
+    display: block;
+    max-height: 80vh;
+    height: auto;
+    width: auto;
+}
+
+.gallery-image {
+    width: 100%;
+    margin-bottom: 0.8em;
+}
+
 a {
     color: rgb(104, 104, 104);
 }
 
 a:hover, a:focus {
     color: rgb(138, 178, 218);
-}
-
-img {
-    width: 100%;
-    margin-bottom: 0.8em;
 }
 
 @media screen and (max-width: 900px) {
