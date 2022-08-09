@@ -43,7 +43,7 @@ class SiteGenerator:
         shutil.copytree("template/static", "public/static")
 
     def render_page(self, title: str, content: str):
-        template = self.env.get_template("_layout.html")
+        template = self.env.get_template("main_layout.html")
 
         link = f"public/{title}.html"
         page = {"title": title, "link": link, "content": content}
@@ -57,7 +57,7 @@ class SiteGenerator:
     def render_images(self, image_paths: List[str], sorting: str = None):
         if sorting:
             image_paths = sort_images(image_paths, sorting)
-        template = self.env.get_template("images.html")
+        template = self.env.get_template("gallery.html")
         return template.render(images=image_paths)
 
     def render_content(self):
