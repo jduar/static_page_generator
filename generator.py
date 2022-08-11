@@ -3,7 +3,7 @@
 import os
 import shutil
 from pathlib import Path
-from typing import Dict, List
+from typing import List
 
 import markdown
 from jinja2 import Environment, FileSystemLoader
@@ -23,7 +23,9 @@ class SiteGenerator:
             Path(DEFAULT_IMAGE_PATH, image) for image in os.listdir(DEFAULT_IMAGE_PATH)
         ]
         self.text_paths = self.text_paths()
-        self.text_page_names = [path.stem for path in self.text_paths if path.stem != "index"]
+        self.text_page_names = [
+            path.stem for path in self.text_paths if path.stem != "index"
+        ]
         self.image_sections = images_per_keyword(self.image_paths)
         self.render_content()
         print(" * Successfully generated site.")
@@ -50,24 +52,38 @@ class SiteGenerator:
 
         with open(link, "w+") as file:
             html = template.render(
-                text_pages=self.text_page_names, image_pages=self.image_sections.keys(), page=page
+                text_pages=self.text_page_names,
+                image_pages=self.image_sections.keys(),
+                page=page,
             )
             file.write(html)
 
     def render_gallery(self, image_paths: List[str], sorting: str = None):
         if sorting:
             image_paths = sort_images(image_paths, sorting)
-        # TODO: For each photo, render a photo page with the photo and details.
+        images = []
+        for path in image_paths:
+            self.render_image_page(path)
+            images.append({"image": path, "page": f"{path.stem}.html"})
         template = self.env.get_template("gallery.html")
-        return template.render(images=image_paths)
+        return template.render(images=images)
 
-    def render_image_page(self):
-        pass
+    def render_image_page(self, image_link: str):
+        template = self.env.get_template("image.html")
+
+        with open(f"public/{image_link.stem}.html", "w+") as file:
+            html = template.render(image=image_link)
+            file.write(html)
 
     def render_content(self):
         for path in self.text_paths:
             if path.stem == "index":
-                self.render_page(title="index", content=self.render_gallery(self.image_paths, sorting=OrderMethod.DATE))
+                self.render_page(
+                    title="index",
+                    content=self.render_gallery(
+                        self.image_paths, sorting=OrderMethod.DATE
+                    ),
+                )
             else:
                 with open(path, "r") as file:
                     content = file.read()
