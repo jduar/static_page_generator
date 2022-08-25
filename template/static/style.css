@@ -49,9 +49,10 @@ li {
 
 .image {
     display: block;
+    max-width: 100%;
     max-height: 80vh;
-    height: auto;
     width: auto;
+    height: auto;
 }
 
 .gallery-image {
@@ -65,6 +66,10 @@ a {
 
 a:hover, a:focus {
     color: rgb(138, 178, 218);
+}
+
+.small-font {
+    font-size: small;
 }
 
 @media screen and (max-width: 900px) {
