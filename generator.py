@@ -8,8 +8,8 @@ from typing import List
 import markdown
 from jinja2 import Environment, FileSystemLoader
 
-from utils.data import images_per_keyword
-from utils.sorters import OrderMethod, sort_images
+from utils.data import Photo, photos_per_keyword
+from utils.sorters import OrderMethod, sort_photos
 
 DEFAULT_IMAGE_PATH = "images/pictures"
 
@@ -19,14 +19,14 @@ class SiteGenerator:
         self.env = Environment(loader=FileSystemLoader("template"))
         self.cleanup()
         self.copy_static()
-        self.image_paths = [
-            Path(DEFAULT_IMAGE_PATH, image) for image in os.listdir(DEFAULT_IMAGE_PATH)
-        ]
+
+        self.photos = self.gather_photos(DEFAULT_IMAGE_PATH)
+        self.photo_sections = photos_per_keyword(self.photos)
+
         self.text_paths = self.text_paths()
         self.text_page_names = [
             path.stem for path in self.text_paths if path.stem != "index"
         ]
-        self.image_sections = images_per_keyword(self.image_paths)
         self.render_content()
         print(" * Successfully generated site.")
 
@@ -53,24 +53,23 @@ class SiteGenerator:
         with open(link, "w+") as file:
             html = template.render(
                 text_pages=self.text_page_names,
-                image_pages=self.image_sections.keys(),
+                photo_pages=self.photo_sections.keys(),
                 page=page,
             )
             file.write(html)
 
-    def render_gallery(self, image_paths: List[str], sorting: str = None):
+    def render_gallery(self, photos: List[Photo], sorting: str = None):
         if sorting:
-            image_paths = sort_images(image_paths, sorting)
+            photos = sort_photos(photos, sorting)
         images = []
-        for path in image_paths:
-            self.render_image_page(path)
-            images.append({"image": path, "page": f"{path.stem}.html"})
+        for photo in photos:
+            self.render_image_page(photo.path)
+            images.append({"photo": photo.path, "page": f"{photo.path.stem}.html"})
         template = self.env.get_template("gallery.html")
-        return template.render(images=images)
+        return template.render(photos=images)
 
     def render_image_page(self, image_link: str):
         template = self.env.get_template("image.html")
-
         with open(f"public/{image_link.stem}.html", "w+") as file:
             html = template.render(image=image_link)
             file.write(html)
@@ -80,9 +79,7 @@ class SiteGenerator:
             if path.stem == "index":
                 self.render_page(
                     title="index",
-                    content=self.render_gallery(
-                        self.image_paths, sorting=OrderMethod.DATE
-                    ),
+                    content=self.render_gallery(self.photos, sorting=OrderMethod.DATE),
                 )
             else:
                 with open(path, "r") as file:
@@ -90,12 +87,15 @@ class SiteGenerator:
                 html_content = markdown.markdown(content, output_format="html5")
                 self.render_page(path.stem, html_content)
 
-        for section in self.image_sections:
-            self.render_page(section, self.render_gallery(self.image_sections[section]))
+        for section in self.photo_sections:
+            self.render_page(section, self.render_gallery(self.photo_sections[section]))
 
     def text_paths(self) -> List[Path]:
         """Returns list of text page paths."""
         return [Path("pages") / path for path in next(os.walk("pages"))[2]]
+
+    def gather_photos(self, path: Path) -> List[Photo]:
+        return [Photo(Path(path, image)) for image in os.listdir(path)]
 
 
 if __name__ == "__main__":

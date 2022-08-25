@@ -1,19 +1,14 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div>
-  <a href={{ image }}>
-    <img class="image" src={{ image }}>
-  </a>
   <div>
+    <a href={{ image }}>
+      <img class="image" src={{ image }}>
+    </a>
     <div>
       <p>Sunday, Jun 26, 2022</p>
-      <p>landscape, mountains</p>
-    </div>
-    <div>
       <p>f/32, 450mm</p>
+      <p class="small-font">landscape, mountains</p>
     </div>
-
   </div>
-</div>
 {% endblock %}

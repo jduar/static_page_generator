@@ -1,37 +1,32 @@
-from collections import defaultdict, namedtuple
-from pathlib import Path
+from collections import defaultdict
 from typing import Dict, List
 
+import settings
 from exif import Image
 from iptcinfo3 import IPTCInfo
 
-import settings
 
-ImageData = namedtuple("ImageData", ["path", "keywords"])
+class Photo:
+    def __init__(self, path):
+        self.path = path
+        self.get_exif_data()
 
-
-def exif_data(image_paths: List[Path], *args):
-    images_data = []
-    for path in image_paths:
-        image_exif = {}
-        image_exif["path"] = path
-        with open(path, "rb") as img_file:
-            for arg in args:
-                try:
-                    image_exif[arg] = getattr(Image(img_file), arg)
-                except (AttributeError, KeyError):
-                    print(f" * This image ({path}) doesn't have the exif info {arg}")
-                    return
-        images_data.append(image_exif)
-    return images_data
+    def get_exif_data(self):
+        image_data = Image(self.path)
+        self.original_date = image_data.datetime_original
+        self.aperture = image_data.get("aperture_value")
+        self.focal_length = image_data.get("focal_length")
+        self.keywords = [
+            keyword.decode("utf-8") for keyword in IPTCInfo(self.path)["keywords"]
+        ]
 
 
-def images_per_keyword(image_paths: List[Path]) -> Dict:
-    keyword_images = defaultdict(list)
-    for image in image_data(image_paths):
-        for keyword in categories(image.keywords):
-            keyword_images[keyword].append(image.path)
-    return keyword_images
+def photos_per_keyword(photos: List[Photo]) -> Dict:
+    keyword_photos = defaultdict(list)
+    for photo in photos:
+        for keyword in categories(photo.keywords):
+            keyword_photos[keyword].append(photo)
+    return keyword_photos
 
 
 def categories(keywords: List[str]) -> List[str]:
@@ -39,12 +34,3 @@ def categories(keywords: List[str]) -> List[str]:
         return keywords
     else:
         return [keyword for keyword in keywords if keyword in settings.CATEGORIES]
-
-
-def image_data(image_paths: List[Path]) -> List[ImageData]:
-    return [
-        ImageData(
-            path, [keyword.decode("utf-8") for keyword in IPTCInfo(path)["keywords"]]
-        )
-        for path in image_paths
-    ]
