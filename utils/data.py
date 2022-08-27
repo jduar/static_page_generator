@@ -1,5 +1,6 @@
 from collections import defaultdict
 from typing import Dict, List
+from datetime import datetime
 
 import settings
 from exif import Image
@@ -19,6 +20,22 @@ class Photo:
         self.keywords = [
             keyword.decode("utf-8") for keyword in IPTCInfo(self.path)["keywords"]
         ]
+
+    def get_original_date(self):
+        return datetime.strptime(self.original_date, "%Y:%m:%d %H:%M:%S").strftime(
+            "%A, %b %-d, %Y"
+        )
+        # 2021:10:14 21:44:43
+        # Sunday, Jun 26, 2022
+
+    def get_aperture(self):
+        return f"f/{int(self.aperture)}"
+
+    def get_focal_length(self):
+        return f"{int(self.focal_length)} mm"
+
+    def get_keywords(self):
+        return ", ".join(self.keywords)
 
 
 def photos_per_keyword(photos: List[Photo]) -> Dict:

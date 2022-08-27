@@ -61,6 +61,7 @@ li {
 }
 
 a {
+    display: inline-block;
     color: rgb(104, 104, 104);
 }
 
@@ -79,7 +80,7 @@ a:hover, a:focus {
     }
 
     .pages a {
-        padding: 10px;
+        padding: 2px 5px 2px 5px;
     }
 
     .pages ul {
@@ -101,6 +102,10 @@ a:hover, a:focus {
 
     .content {
         width: 100%;
+    }
+
+    .title {
+        padding-top: 5px;
     }
 
     .horizontal {

@@ -61,17 +61,19 @@ class SiteGenerator:
     def render_gallery(self, photos: List[Photo], sorting: str = None):
         if sorting:
             photos = sort_photos(photos, sorting)
-        images = []
+        photo_context = []
         for photo in photos:
-            self.render_image_page(photo.path)
-            images.append({"photo": photo.path, "page": f"{photo.path.stem}.html"})
+            self.render_photo_page(photo)
+            photo_context.append(
+                {"photo": photo.path, "page": f"{photo.path.stem}.html"}
+            )
         template = self.env.get_template("gallery.html")
-        return template.render(photos=images)
+        return template.render(photos=photo_context)
 
-    def render_image_page(self, image_link: str):
-        template = self.env.get_template("image.html")
-        with open(f"public/{image_link.stem}.html", "w+") as file:
-            html = template.render(image=image_link)
+    def render_photo_page(self, photo: Photo):
+        template = self.env.get_template("photo.html")
+        with open(f"public/{photo.path.stem}.html", "w+") as file:
+            html = template.render(photo=photo)
             file.write(html)
 
     def render_content(self):
