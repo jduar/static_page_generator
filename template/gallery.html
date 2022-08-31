@@ -1,0 +1,7 @@
+<div class="pictures">
+  {% for photo in photos %}
+    <a href={{ photo.page }}>
+      <img class="gallery-image" src={{ photo.photo }}>
+    </a>
+  {% endfor %}
+</div>
