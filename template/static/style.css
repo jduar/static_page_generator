@@ -47,7 +47,21 @@ li {
     font-size: 1.5em;
 }
 
+.image {
+    display: block;
+    max-width: 100%;
+    max-height: 80vh;
+    width: auto;
+    height: auto;
+}
+
+.gallery-image {
+    width: 100%;
+    margin-bottom: 0.8em;
+}
+
 a {
+    display: inline-block;
     color: rgb(104, 104, 104);
 }
 
@@ -55,9 +69,8 @@ a:hover, a:focus {
     color: rgb(138, 178, 218);
 }
 
-img {
-    width: 100%;
-    margin-bottom: 0.8em;
+.small-font {
+    font-size: small;
 }
 
 @media screen and (max-width: 900px) {
@@ -67,7 +80,7 @@ img {
     }
 
     .pages a {
-        padding: 10px;
+        padding: 2px 5px 2px 5px;
     }
 
     .pages ul {
@@ -89,6 +102,10 @@ img {
 
     .content {
         width: 100%;
+    }
+
+    .title {
+        padding-top: 5px;
     }
 
     .horizontal {
