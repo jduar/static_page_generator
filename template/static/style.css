@@ -15,14 +15,15 @@ li {
 }
 
 .pages {
-    display: flex;
-    flex-direction: column;
-    width: 22%;
+    width: 100%;
+    flex-direction: row;
 }
 
 .pages a {
-    text-decoration: none;
+    padding: 2px 5px 2px 5px;
 }
+
+
 
 .pictures {
     column-count: 3;
@@ -33,31 +34,16 @@ li {
     flex-direction: row;
 }
 
-.container {
-    color: rgb(95, 95, 95);
-}
-
 .content {
-    width: 78%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    width: 100%;
 }
 
 .title {
     padding-top: 20px;
     padding-bottom: 30px;
     font-size: 1.5em;
-}
-
-.image {
-    display: block;
-    max-width: 100%;
-    max-height: 80vh;
-    width: auto;
-    height: auto;
-}
-
-.gallery-image {
-    width: 100%;
-    margin-bottom: 0.8em;
 }
 
 a {
@@ -73,16 +59,58 @@ a:hover, a:focus {
     font-size: small;
 }
 
-@media screen and (max-width: 900px) {
+.image-gallery {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.image-gallery .column {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.image-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.image {
+    display: block;
+    max-width: 100%;
+    max-height: 80vh;
+    width: auto;
+    height: auto;
+}
+
+@media only screen and (min-width: 768px) {
     .pages {
-        width: 100%;
-        flex-direction: row;
+        display: flex;
+        flex-direction: column;
+        width: 22%;
     }
 
     .pages a {
-        padding: 2px 5px 2px 5px;
+        text-decoration: none;
     }
 
+    .content {
+        color: rgb(95, 95, 95);
+        width: 78%;
+    }
+
+    .image-gallery {
+        flex-direction: row;
+    }
+
+    .image-gallery .column {
+        max-width: 35%;
+    }
+}
+
+@media screen and (max-width: 768px) {
     .pages ul {
         list-style: none;
     }
@@ -93,15 +121,6 @@ a:hover, a:focus {
 
     .blank {
         display: none;
-    }
-
-    .container {
-        padding-top: 10px;
-        padding-bottom: 10px;
-    }
-
-    .content {
-        width: 100%;
     }
 
     .title {

@@ -1,7 +1,27 @@
-<div class="pictures">
-  {% for photo in photos %}
-    <a href={{ photo.page }}>
-      <img class="gallery-image" src={{ photo.photo }}>
-    </a>
-  {% endfor %}
+<div class="image-gallery">
+    <div class="column">
+      {% for n in range(0, photos | length, 3) %}
+        <a class="image-item" href={{ photos[n].page }}>
+          <img class="image-item" src={{ photos[n].photo }}>
+        </a>
+      {% endfor %}
+    </div>
+    {% if photos[1] %}
+      <div class="column">
+        {% for n in range(1, photos | length, 3) %}
+          <a class="image-item" href={{ photos[n].page }}>
+            <img class="image-item" src={{ photos[n].photo }}>
+          </a>
+        {% endfor %}
+      </div>
+    {% endif %}
+    {% if photos[2] %}
+      <div class="column">
+        {% for n in range(2, photos | length, 3) %}
+            <a class="image-item" href={{ photos[n].page }}>
+            <img class="image-item" src={{ photos[n].photo }}>
+            </a>
+        {% endfor %}
+      </div>
+    {% endif %}
 </div>

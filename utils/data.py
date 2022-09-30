@@ -23,7 +23,7 @@ class Photo:
 
     def get_original_date(self):
         return datetime.strptime(self.original_date, "%Y:%m:%d %H:%M:%S").strftime(
-            "%A, %b %-d, %Y"
+            "%A, %b %#d, %Y"
         )
         # 2021:10:14 21:44:43
         # Sunday, Jun 26, 2022
