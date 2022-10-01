@@ -29,6 +29,6 @@ def color_sort(photos: List[Photo]) -> List[Photo]:
     photo_list = []
     for photo in photos:
         H, _, _ = Image.open(photo.path).convert("RGB").convert("HSV").split()
-        photo_list.append((photo.path, ImageStat.Stat(H).mean))
+        photo_list.append((photo, ImageStat.Stat(H).mean))
     sorted_list = sorted(photo_list, key=lambda x: x[1])
     return [image[0] for image in sorted_list]
