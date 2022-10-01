@@ -11,12 +11,14 @@ class OrderMethod:
 
 
 def sort_photos(photos: List[Photo], order_method: str):
-    if order_method == OrderMethod.DATE:
-        return date_sort(photos)
-    elif order_method == OrderMethod.COLOR:
-        return color_sort(photos)
-    else:
-        print("Not sorted.")
+    sorting_map = {"date": date_sort,
+                   "color": color_sort,
+                   }
+    try:
+        return sorting_map[order_method](photos)
+
+    except KeyError:
+        print("Can't recognize sorting option, skipping it!")
 
 
 def date_sort(photos: List[Photo]) -> List[Photo]:
