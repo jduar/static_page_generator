@@ -1,5 +1,6 @@
 from collections import defaultdict
-from typing import Dict, List
+from pathlib import Path
+from typing import Dict, List, NoReturn
 from datetime import datetime
 
 import settings
@@ -8,11 +9,11 @@ from iptcinfo3 import IPTCInfo
 
 
 class Photo:
-    def __init__(self, path):
+    def __init__(self, path: Path):
         self.path = path
         self.get_exif_data()
 
-    def get_exif_data(self):
+    def get_exif_data(self) -> NoReturn:
         image_data = Image(self.path)
         self.original_date = image_data.datetime_original
         self.aperture = image_data.get("aperture_value")
@@ -21,24 +22,24 @@ class Photo:
             keyword.decode("utf-8") for keyword in IPTCInfo(self.path)["keywords"]
         ]
 
-    def get_original_date(self):
+    def get_original_date(self) -> str:
         return datetime.strptime(self.original_date, "%Y:%m:%d %H:%M:%S").strftime(
             "%A, %b %d, %Y"
         )
         # 2021:10:14 21:44:43
         # Sunday, Jun 26, 2022
 
-    def get_aperture(self):
+    def get_aperture(self) -> str:
         return f"f/{int(self.aperture)}"
 
-    def get_focal_length(self):
+    def get_focal_length(self) -> str:
         return f"{int(self.focal_length)} mm"
 
-    def get_keywords(self):
+    def get_keywords(self) -> str:
         return ", ".join(self.keywords)
 
 
-def photos_per_keyword(photos: List[Photo]) -> Dict:
+def photos_per_keyword(photos: List[Photo]) -> Dict[str,Photo]:
     keyword_photos = defaultdict(list)
     for photo in photos:
         for keyword in categories(photo.keywords):

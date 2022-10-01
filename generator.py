@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-import os
 import shutil
 from pathlib import Path
 from typing import List
@@ -11,7 +10,7 @@ from jinja2 import Environment, FileSystemLoader
 from utils.data import Photo, photos_per_keyword
 from utils.sorters import OrderMethod, sort_photos
 
-DEFAULT_IMAGE_PATH = "images/pictures"
+DEFAULT_IMAGE_PATH = Path("images/pictures")
 
 
 class SiteGenerator:
@@ -32,14 +31,12 @@ class SiteGenerator:
 
     def cleanup(self):
         public = Path("public")
-        if public.is_dir():
-            for path in public.glob("*"):
-                if path.is_dir():
-                    shutil.rmtree(path)
-                else:
-                    os.remove(path)
-        else:
-            os.mkdir("./public")
+        public.mkdir(exist_ok=True, parents=True)
+        for path in public.iterdir():
+            if path.is_dir():
+                shutil.rmtree(path)
+            else:
+                path.unlink()
 
     def copy_static(self):
         shutil.copytree("template/static", "public/static")
@@ -94,10 +91,10 @@ class SiteGenerator:
 
     def text_paths(self) -> List[Path]:
         """Returns list of text page paths."""
-        return [Path("pages") / path for path in next(os.walk("pages"))[2]]
+        return list(Path("pages").iterdir())
 
     def gather_photos(self, path: Path) -> List[Photo]:
-        return [Photo(Path(path, image)) for image in os.listdir(path)]
+        return [Photo(image) for image in path.iterdir()]
 
 
 if __name__ == "__main__":
