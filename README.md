@@ -20,7 +20,7 @@ The generator currently has two generating behaviours: text pages and image gall
 
 In order to have text sections, create a `pages` directory at the root directory (or change the `DEFAULT_PAGES_PATH` variable within `generator.py` to point to a different directory). Any markdown document placed inside will be converted to HTML and its name will be used as a section name. For example, if you have a file named `about.md` within your text pages directory, a section named `about` will be added to the website with the content of the document in it.
 
-n order to have image gallery sections, create a `images\pictures` directory structure at the root directory. All pictures within it will be separated into sections by their keyword data.
+In order to have image gallery sections, create a `images\pictures` directory structure at the root directory. All pictures within it will be separated into sections by their keyword data.
 
 Though a `DEFAULT_IMAGE_PATH` variable also exists, the pictures' directory is currently not changeable.
 
