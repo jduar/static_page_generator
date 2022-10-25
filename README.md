@@ -16,17 +16,13 @@ By this point, this is less of a generic static page generator and more of stati
 
 ## Functionality
 
-At this stage, the script has two generating behaviours for pages focused on text and pages which act as image galleries.
+The generator currently has two generating behaviours: text pages and image galleries.
 
-In order to have text sections, create a `pages` directory at the root directory. Any markdown document palced inside will be converted to HTML and its name will be used as a section name.
+In order to have text sections, create a `pages` directory at the root directory (or change the `DEFAULT_PAGES_PATH` variable within `generator.py` to point to a different directory). Any markdown document placed inside will be converted to HTML and its name will be used as a section name. For example, if you have a file named `about.md` within your text pages directory, a section named `about` will be added to the website with the content of the document in it.
 
-In order to have image gallery sections, create a `images\pictures` directory structure at the root directory. All pictures within it will be separated into sections by their keyword data.
+n order to have image gallery sections, create a `images\pictures` directory structure at the root directory. All pictures within it will be separated into sections by their keyword data.
 
-There is a base layout template and CSS styling inside `template`.
-
-I might make all of this structure less "mandatory" in the future. It could maybe just ask you on a first run: "Point me to your pages directory and your image directory" and use those.
-
-We'll see.
+Though a `DEFAULT_IMAGE_PATH` variable also exists, the pictures' directory is currently not changeable.
 
 Running the docker container then sets up an nginx server with the pages you've just generated.
 
