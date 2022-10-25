@@ -15,17 +15,12 @@ li {
 }
 
 .pages {
-    display: flex;
-    flex-direction: column;
-    width: 22%;
+    width: 100%;
+    flex-direction: row;
 }
 
 .pages a {
-    text-decoration: none;
-}
-
-.pictures {
-    column-count: 3;
+    padding: 2px 5px 2px 5px;
 }
 
 .horizontal {
@@ -33,13 +28,41 @@ li {
     flex-direction: row;
 }
 
-.container {
-    color: rgb(95, 95, 95);
+.content {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    width: 100%;
 }
 
-.content {
-    width: 78%;
+.image-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
 }
+
+.image-gallery > li {
+    flex: auto;
+    cursor: pointer;
+    position: relative;
+}
+
+.image-gallery li a {
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+}
+
+.image-gallery li a img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    vertical-align: middle;
+}
+
+.image-gallery::after {
+    content: "";
+    flex-grow: 999;
+  }
 
 .title {
     padding-top: 20px;
@@ -47,15 +70,7 @@ li {
     font-size: 1.5em;
 }
 
-.image {
-    display: block;
-    max-width: 100%;
-    max-height: 80vh;
-    width: auto;
-    height: auto;
-}
-
-.gallery-image {
+.image-temp {
     width: 100%;
     margin-bottom: 0.8em;
 }
@@ -73,16 +88,42 @@ a:hover, a:focus {
     font-size: small;
 }
 
-@media screen and (max-width: 900px) {
+.image {
+    display: block;
+    max-width: 100%;
+    max-height: 80vh;
+    width: auto;
+    height: auto;
+}
+
+@media only screen and (min-width: 768px) {
     .pages {
-        width: 100%;
-        flex-direction: row;
+        display: flex;
+        flex-direction: column;
+        width: 22%;
     }
 
     .pages a {
-        padding: 2px 5px 2px 5px;
+        text-decoration: none;
     }
 
+    .content {
+        color: rgb(95, 95, 95);
+        width: 78%;
+    }
+
+    .image-gallery > li {
+        height: 300px;
+    }
+}
+
+@media only screen and (min-width: 2560px) {
+    .image-gallery > li {
+        height: 450px;
+    }
+}
+
+@media screen and (max-width: 768px) {
     .pages ul {
         list-style: none;
     }
@@ -95,24 +136,11 @@ a:hover, a:focus {
         display: none;
     }
 
-    .container {
-        padding-top: 10px;
-        padding-bottom: 10px;
-    }
-
-    .content {
-        width: 100%;
-    }
-
     .title {
         padding-top: 5px;
     }
 
     .horizontal {
         flex-direction: column;
-    }
-
-    .pictures {
-        column-count: 1;
     }
 }
