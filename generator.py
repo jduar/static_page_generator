@@ -10,7 +10,9 @@ from jinja2 import Environment, FileSystemLoader
 from utils.data import Photo, photos_per_keyword
 from utils.sorters import OrderMethod, sort_photos
 
-DEFAULT_IMAGE_PATH = Path("images/pictures")
+# FIXME: DEFAULT_IMAGE_PATH will currently break if changed. Fix this somehow.
+DEFAULT_IMAGE_PATH = Path("images/pictures")  # path for directory containing images
+DEFAULT_PAGES_PATH = Path("pages")  # path for directory containing the pages
 
 
 class SiteGenerator:
@@ -74,12 +76,13 @@ class SiteGenerator:
             file.write(html)
 
     def render_content(self):
+        self.render_page(
+            title="index",
+            content=self.render_gallery(self.photos, sorting=OrderMethod.DATE),
+        )
         for path in self.text_paths:
             if path.stem == "index":
-                self.render_page(
-                    title="index",
-                    content=self.render_gallery(self.photos, sorting=OrderMethod.DATE),
-                )
+                continue
             else:
                 with open(path, "r") as file:
                     content = file.read()
@@ -91,7 +94,7 @@ class SiteGenerator:
 
     def text_paths(self) -> List[Path]:
         """Returns list of text page paths."""
-        return list(Path("pages").iterdir())
+        return list(DEFAULT_PAGES_PATH.iterdir())
 
     def gather_photos(self, path: Path) -> List[Photo]:
         return [Photo(image) for image in path.iterdir()]
