@@ -1,7 +1,11 @@
-<div class="pictures">
-  {% for photo in photos %}
-    <a href={{ photo.page }}>
-      <img class="gallery-image" src={{ photo.photo }}>
-    </a>
-  {% endfor %}
+<div class="gallery">
+  <ul class="image-gallery">
+    {% for photo in photos %}
+      <li>
+        <a href={{ photo.page }}>
+          <img class="image-temp" src={{ photo.photo }}>
+        </a>
+      </li>
+    {% endfor %}
+  <ul>
 </div>
