@@ -9,19 +9,19 @@ from jinja2 import Environment, FileSystemLoader
 
 from utils.data import Photo, photos_per_keyword
 from utils.sorters import OrderMethod, sort_photos
-
-# FIXME: DEFAULT_IMAGE_PATH will currently break if changed. Fix this somehow.
-DEFAULT_IMAGE_PATH = Path("images/pictures")  # path for directory containing images
-DEFAULT_PAGES_PATH = Path("pages")  # path for directory containing the pages
+from os import getenv
+from dotenv import load_dotenv
 
 
 class SiteGenerator:
     def __init__(self):
+        load_dotenv()
+        self.image_path = Path(getenv("PICTURES_FOLDER"))
+        self.pages_path = Path(getenv("PAGES_FOLDER"))
         self.env = Environment(loader=FileSystemLoader("template"))
         self.cleanup()
         self.copy_static()
-
-        self.photos = self.gather_photos(DEFAULT_IMAGE_PATH)
+        self.photos = self.gather_photos(self.image_path)
         self.photo_sections = photos_per_keyword(self.photos)
 
         self.text_paths = self.text_paths()
@@ -94,7 +94,7 @@ class SiteGenerator:
 
     def text_paths(self) -> List[Path]:
         """Returns list of text page paths."""
-        return list(DEFAULT_PAGES_PATH.iterdir())
+        return list(self.pages_path.iterdir())
 
     def gather_photos(self, path: Path) -> List[Photo]:
         return [Photo(image) for image in path.iterdir()]
