@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
 
 import shutil
+from os import getenv
 from pathlib import Path
 from typing import List
 
 import markdown
+from dotenv import load_dotenv
 from jinja2 import Environment, FileSystemLoader
 
 from utils.data import Photo, photos_per_keyword
 from utils.sorters import OrderMethod, sort_photos
-from os import getenv
-from dotenv import load_dotenv
 
 
 class SiteGenerator:
