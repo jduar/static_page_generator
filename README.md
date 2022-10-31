@@ -18,11 +18,9 @@ By this point, this is less of a generic static page generator and more of stati
 
 The generator currently has two generating behaviours: text pages and image galleries.
 
-In order to have text sections, create a `pages` directory at the root directory (or change the `DEFAULT_PAGES_PATH` variable within `generator.py` to point to a different directory). Any markdown document placed inside will be converted to HTML and its name will be used as a section name. For example, if you have a file named `about.md` within your text pages directory, a section named `about` will be added to the website with the content of the document in it.
+Text pages are HTML pages converted from Markdown documents. These should be stored inside a directory which you can point to by changing the `PAGES_FOLDER` variable in the `.env` file.
 
-In order to have image gallery sections, create a `images\pictures` directory structure at the root directory. All pictures within it will be separated into sections by their keyword data.
-
-Though a `DEFAULT_IMAGE_PATH` variable also exists, the pictures' directory is currently not changeable.
+Photo galleries are generated from photos containing keyword data. Each keyword will generate a section with the pictures which have that keyword placed within. The website's main page will display all photos. Point to your photos by changing the `PICTURES_FOLDER` directory in the `.env` file.
 
 Running the docker container then sets up an nginx server with the pages you've just generated.
 
@@ -48,4 +46,4 @@ $ docker-compose up --build
 
 Et voilà!
 
-You should be able to access your new ~~empire~~ website at localhost:80.
+You should be able to access your new ~~empire~~ website at `localhost`.

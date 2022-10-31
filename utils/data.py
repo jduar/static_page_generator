@@ -1,7 +1,7 @@
 from collections import defaultdict
+from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, NoReturn
-from datetime import datetime
 
 import settings
 from exif import Image
@@ -10,16 +10,17 @@ from iptcinfo3 import IPTCInfo
 
 class Photo:
     def __init__(self, path: Path):
-        self.path = path
+        self.local_path = path  # local path
+        self.path = Path("images") / path.name  # path inside container
         self.get_exif_data()
 
     def get_exif_data(self) -> NoReturn:
-        image_data = Image(self.path)
+        image_data = Image(self.local_path)
         self.original_date = image_data.datetime_original
         self.aperture = image_data.get("aperture_value")
         self.focal_length = image_data.get("focal_length")
         self.keywords = [
-            keyword.decode("utf-8") for keyword in IPTCInfo(self.path)["keywords"]
+            keyword.decode("utf-8") for keyword in IPTCInfo(self.local_path)["keywords"]
         ]
 
     def get_original_date(self) -> str:
@@ -39,7 +40,7 @@ class Photo:
         return ", ".join(self.keywords)
 
 
-def photos_per_keyword(photos: List[Photo]) -> Dict[str,Photo]:
+def photos_per_keyword(photos: List[Photo]) -> Dict[str, Photo]:
     keyword_photos = defaultdict(list)
     for photo in photos:
         for keyword in categories(photo.keywords):
