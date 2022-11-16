@@ -1,7 +1,7 @@
 <div class="gallery">
-  <ul class="image-gallery">
+  <ul class="image-gallery" id="gallery">
     {% for photo in photos %}
-      <li>
+      <li class="image-outer">
         <a href={{ photo.page }}>
           <img class="image-temp" src={{ photo.photo }}>
         </a>
