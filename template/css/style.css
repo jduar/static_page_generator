@@ -11,7 +11,6 @@ ul {
 
 li {
     list-style-type: none;
-    padding-bottom: .5em;
 }
 
 .pages {
@@ -20,7 +19,7 @@ li {
 }
 
 .pages a {
-    padding: 2px 5px 2px 5px;
+    padding: 2px 5px 10px 5px;
 }
 
 .horizontal {
@@ -37,7 +36,7 @@ li {
 .image-gallery {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    /* gap: 10px; */
 }
 
 .image-gallery > li {
@@ -72,7 +71,6 @@ li {
 
 .image-temp {
     width: 100%;
-    margin-bottom: 0.8em;
 }
 
 a {
