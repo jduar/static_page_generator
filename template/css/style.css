@@ -1,0 +1,163 @@
+body {
+  padding: 10px 25px 10px 25px;
+  background-color: #f5f5f5;
+  font-family: "Courier New", monospace, Helvetica, verdana, sans-serif;
+}
+
+ul {
+  padding-left: 0;
+  margin-top: 0;
+}
+
+li {
+  list-style-type: none;
+  padding: 5px;
+}
+
+.pages {
+  width: 100%;
+  flex-direction: row;
+}
+
+.pages a {
+  padding: 2px 5px 2px 5px;
+  text-decoration: none;
+}
+
+.pages ul {
+  list-style: none;
+}
+
+.pages li {
+  float: left;
+}
+
+.horizontal {
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  width: 100%;
+}
+
+.gallery {
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+.image-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+}
+
+.image-gallery > li {
+  flex: auto;
+  cursor: pointer;
+  position: relative;
+}
+
+.image-gallery li a {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+}
+
+.image-gallery li a img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  vertical-align: middle;
+}
+
+.image-gallery::after {
+  content: "";
+  flex-grow: 999;
+}
+
+.title {
+  padding-top: 20px;
+  padding-bottom: 15px;
+  font-size: 1.5em;
+}
+
+.gallery-image {
+  width: 100%;
+}
+
+a {
+  display: inline-block;
+  color: rgb(104, 104, 104);
+}
+
+a:hover,
+a:focus {
+  color: rgb(138, 178, 218);
+}
+
+.small-font {
+  font-size: small;
+}
+
+.image {
+  display: block;
+  max-width: 100%;
+  max-height: 80vh;
+  width: auto;
+  height: auto;
+}
+
+@media only screen and (min-width: 865px) {
+  .pages {
+    display: flex;
+    flex-direction: column;
+    width: 22%;
+  }
+
+  .pages li {
+    float: none;
+  }
+
+  .content {
+    color: rgb(95, 95, 95);
+    width: 78%;
+  }
+
+  .gallery {
+    padding-right: 0px;
+    padding-left: 0px;
+  }
+
+  .image-gallery > li {
+    height: 195px;
+  }
+
+  .title {
+    padding-top: 20px;
+  }
+
+  .horizontal {
+    flex-direction: row;
+  }
+}
+
+@media only screen and (min-width: 1080px) {
+  .image-gallery > li {
+    height: 290px;
+  }
+}
+
+@media only screen and (min-width: 1920px) {
+  .image-gallery > li {
+    height: 350px;
+  }
+}
+
+@media only screen and (min-width: 2560px) {
+  .image-gallery > li {
+    height: 450px;
+  }
+}
