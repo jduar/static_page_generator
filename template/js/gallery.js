@@ -9,40 +9,44 @@ function buildGallery() {
   if (windowWidth >= 865) {
     // We only need CSS on small screens.
     var gallery = document.getElementById("gallery");
-    var images = document.getElementsByClassName("image-outer");
 
-    var maxWidth = gallery.offsetWidth - 1;
+    if (gallery) {
+      var images = document.getElementsByClassName("image-outer");
 
-    let row = 0;
-    let rowWidth = 0;
+      var maxWidth = gallery.offsetWidth - 1;
 
-    let positionInRow = 0;
+      let row = 0;
+      let rowWidth = 0;
 
-    for (let img_index = 0; img_index < images.length; img_index++) {
-      proposedWidth = calculateWidth(images[img_index]);
+      let positionInRow = 0;
 
-      if (rowWidth + proposedWidth + 2 * padding <= maxWidth) {
-        rowWidth += proposedWidth;
-        positionInRow++;
-      } else if (
-        rowWidth + proposedWidth + 2 * padding > maxWidth &&
-        positionInRow === 0
-      ) {
-        images[img_index].height = calculateHeight(images[img_index], maxWidth);
-        row++;
-      } else if (
-        rowWidth + proposedWidth + 2 * padding > maxWidth &&
-        positionInRow > 0
-      ) {
-        var imagesToAdjust = [];
-        for (let position = 0; position <= positionInRow; position++) {
-          imagesToAdjust.push(images[img_index - (positionInRow - position)]);
+      for (let img_index = 0; img_index < images.length; img_index++) {
+        proposedWidth = calculateWidth(images[img_index]);
+
+        if (rowWidth + proposedWidth + 2 * padding <= maxWidth) {
+          rowWidth += proposedWidth;
+          positionInRow++;
+        } else if (
+          rowWidth + proposedWidth + 2 * padding > maxWidth &&
+          positionInRow === 0
+        ) {
+          images[img_index].height = calculateHeight(images[img_index], maxWidth);
+          row++;
+        } else if (
+          rowWidth + proposedWidth + 2 * padding > maxWidth &&
+          positionInRow > 0
+        ) {
+          var imagesToAdjust = [];
+          for (let position = 0; position <= positionInRow; position++) {
+            imagesToAdjust.push(images[img_index - (positionInRow - position)]);
+          }
+          adjustImagesToFit(imagesToAdjust, maxWidth);
+
+          row++;
+          rowWidth = 0;
+          positionInRow = 0;
         }
-        adjustImagesToFit(imagesToAdjust, maxWidth);
-
-        row++;
-        rowWidth = 0;
-        positionInRow = 0;
+        loadImage(images[img_index]);
       }
     }
   }
@@ -53,13 +57,15 @@ function getImageWithin(div) {
 }
 
 function calculateWidth(div, height = preferMaxHeight) {
-  var ratio = height / getImageWithin(div).naturalHeight;
-  return getImageWithin(div).naturalWidth * ratio;
+  let image = getImageWithin(div);
+  var ratio = height / image.naturalHeight;
+  return image.naturalWidth * ratio;
 }
 
 function calculateHeight(div, width) {
-  var ratio = width / getImageWithin(div).naturalWidth;
-  return getImageWithin(div).naturalHeight * ratio;
+  let image = getImageWithin(div);
+  var ratio = width / image.naturalWidth;
+  return image.naturalHeight * ratio;
 }
 
 function setSize(div, height, width) {
@@ -94,4 +100,9 @@ function setPreferredMaxHeight() {
   } else if (windowWidth >= 2560) {
     preferMaxHeight = 450;
   }
+}
+
+function loadImage(image_div) {
+  let image = getImageWithin(image_div);
+  image.src = image.getAttribute("data-src");
 }
