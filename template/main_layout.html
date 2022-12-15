@@ -9,15 +9,20 @@
   <div class="horizontal">
     <div class="pages">
       <ul>
-        {% for page in text_pages %}
-        <li>
-          <a href="{{ page }}">{{ page }}</a>
-        </li>
-        {% endfor %} &nbsp; {% for page in photo_pages %}
-        <li>
-          <a href="{{ page }}">{{ page }}</a>
-        </li>
-        {% endfor %}
+        <div class="top-space">
+          {% for page in text_pages %}
+            <li>
+              <a href="{{ page }}">{{ page }}</a>
+            </li>
+          {% endfor %}
+        </div>
+        <div class="top-space">
+          {% for page in photo_pages %}
+            <li>
+              <a href="{{ page }}">{{ page }}</a>
+            </li>
+          {% endfor %}
+        </div>
       </ul>
     </div>
     <div class="content">{{ page.content }}</div>

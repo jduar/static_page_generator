@@ -20,7 +20,8 @@ li {
 }
 
 .pages a {
-  padding: 2px 5px 2px 5px;
+  padding-left: 5px;
+  padding-right: 5px;
   text-decoration: none;
 }
 
@@ -30,6 +31,8 @@ li {
 
 .pages li {
   float: left;
+  padding-left: 0px;
+  padding-right: 0px;
 }
 
 .horizontal {
@@ -112,9 +115,13 @@ a:focus {
 
 @media only screen and (min-width: 865px) {
   .pages {
-    display: flex;
-    flex-direction: column;
-    width: 22%;
+      display: flex;
+      flex-direction: column;
+      width: 20%;
+  }
+
+  .pages ul {
+    padding-left: 30px;
   }
 
   .pages li {
@@ -137,10 +144,15 @@ a:focus {
 
   .title {
     padding-top: 20px;
+    padding-left: 30px;
   }
 
   .horizontal {
     flex-direction: row;
+  }
+
+  .top-space {
+    margin-top: 20px;
   }
 }
 
