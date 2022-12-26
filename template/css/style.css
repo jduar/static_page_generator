@@ -69,7 +69,7 @@ li {
   max-width: 100%;
 }
 
-.image-gallery li a img {
+.photo {
   object-fit: cover;
   width: 100%;
   height: 100%;
