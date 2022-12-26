@@ -20,7 +20,7 @@ class SiteGenerator:
         self.pages_path = Path(getenv("PAGES_FOLDER"))
         self.env = Environment(loader=FileSystemLoader("template"))
         self.cleanup()
-        self.copy_css_js()
+        self.copy_static()
         self.photos = self.gather_photos(self.image_path)
         self.photo_sections = photos_per_keyword(self.photos)
 
@@ -40,7 +40,7 @@ class SiteGenerator:
             else:
                 path.unlink()
 
-    def copy_css_js(self):
+    def copy_static(self):
         shutil.copytree("template/css", "public/css")
         shutil.copytree("template/js", "public/js")
 
