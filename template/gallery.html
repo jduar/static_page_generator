@@ -3,9 +3,9 @@
     {% for photo in photos %}
       <li class="image-outer">
         <a href={{ photo.page }}>
-          <img class="photo gallery-image" data-src={{ photo.photo }} loading="lazy">
+          <img class="photo gallery-image" data-src={{ photo.photo }} width={{ photo.width }} height={{ photo.height }} loading="lazy">
           <noscript>
-            <img class="photo gallery-image" src={{ photo.photo }} loading="lazy">
+            <img class="photo gallery-image" src={{ photo.photo }}>
           </noscript>
         </a>
       </li>

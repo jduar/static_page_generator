@@ -65,7 +65,12 @@ class SiteGenerator:
         for photo in photos:
             self.render_photo_page(photo)
             photo_context.append(
-                {"photo": photo.path, "page": f"{photo.path.stem}.html"}
+                {
+                    "photo": photo.path,
+                    "page": f"{photo.path.stem}.html",
+                    "width": photo.width,
+                    "height": photo.height,
+                }
             )
         template = self.env.get_template("gallery.html")
         return template.render(photos=photo_context)
