@@ -1,7 +1,7 @@
 from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, List, NoReturn
+from typing import Dict, List
 
 import settings
 from exif import Image
@@ -16,7 +16,7 @@ class Photo:
         self.get_exif_data()
         self.get_image_size()
 
-    def get_exif_data(self) -> NoReturn:
+    def get_exif_data(self) -> None:
         image_data = Image(self.local_path)
         self.original_date = image_data.datetime_original
         self.aperture = image_data.get("aperture_value")
@@ -25,7 +25,7 @@ class Photo:
             keyword.decode("utf-8") for keyword in IPTCInfo(self.local_path)["keywords"]
         ]
 
-    def get_image_size(self) -> NoReturn:
+    def get_image_size(self) -> None:
         image = PILImage.open(self.local_path)
         self.width, self.height = image.size
 
