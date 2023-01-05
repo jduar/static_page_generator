@@ -96,7 +96,7 @@ class SiteGenerator:
                 self.render_page(path.stem, html_content)
 
         for section in self.photo_sections:
-            self.render_page(section, self.render_gallery(self.photo_sections[section]))
+            self.render_page(section, self.render_gallery(self.photo_sections[section], sorting=OrderMethod.DATE))
 
     def text_paths(self) -> List[Path]:
         """Returns list of text page paths."""
