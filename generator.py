@@ -20,7 +20,7 @@ class SiteGenerator:
         self.pages_path = Path(getenv("PAGES_FOLDER"))
         self.env = Environment(loader=FileSystemLoader("template"))
         self.cleanup()
-        self.copy_css_js()
+        self.copy_static()
         self.photos = self.gather_photos(self.image_path)
         self.photo_sections = photos_per_keyword(self.photos)
 
@@ -40,7 +40,7 @@ class SiteGenerator:
             else:
                 path.unlink()
 
-    def copy_css_js(self):
+    def copy_static(self):
         shutil.copytree("template/css", "public/css")
         shutil.copytree("template/js", "public/js")
 
@@ -65,7 +65,12 @@ class SiteGenerator:
         for photo in photos:
             self.render_photo_page(photo)
             photo_context.append(
-                {"photo": photo.path, "page": f"{photo.path.stem}.html"}
+                {
+                    "photo": photo.path,
+                    "page": f"{photo.path.stem}.html",
+                    "width": photo.width,
+                    "height": photo.height,
+                }
             )
         template = self.env.get_template("gallery.html")
         return template.render(photos=photo_context)
@@ -91,7 +96,7 @@ class SiteGenerator:
                 self.render_page(path.stem, html_content)
 
         for section in self.photo_sections:
-            self.render_page(section, self.render_gallery(self.photo_sections[section]))
+            self.render_page(section, self.render_gallery(self.photo_sections[section], sorting=OrderMethod.DATE))
 
     def text_paths(self) -> List[Path]:
         """Returns list of text page paths."""

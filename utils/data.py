@@ -1,11 +1,12 @@
 from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, List, NoReturn
+from typing import Dict, List
 
 import settings
 from exif import Image
 from iptcinfo3 import IPTCInfo
+from PIL import Image as PILImage
 
 
 class Photo:
@@ -13,8 +14,9 @@ class Photo:
         self.local_path = path  # local path
         self.path = Path("images") / path.name  # path inside container
         self.get_exif_data()
+        self.get_image_size()
 
-    def get_exif_data(self) -> NoReturn:
+    def get_exif_data(self) -> None:
         image_data = Image(self.local_path)
         self.original_date = image_data.datetime_original
         self.aperture = image_data.get("aperture_value")
@@ -22,6 +24,10 @@ class Photo:
         self.keywords = [
             keyword.decode("utf-8") for keyword in IPTCInfo(self.local_path)["keywords"]
         ]
+
+    def get_image_size(self) -> None:
+        image = PILImage.open(self.local_path)
+        self.width, self.height = image.size
 
     def get_original_date(self) -> str:
         return datetime.strptime(self.original_date, "%Y:%m:%d %H:%M:%S").strftime(
@@ -40,7 +46,7 @@ class Photo:
         return ", ".join(self.keywords)
 
 
-def photos_per_keyword(photos: List[Photo]) -> Dict[str, Photo]:
+def photos_per_keyword(photos: List[Photo]) -> Dict[str, List[Photo]]:
     keyword_photos = defaultdict(list)
     for photo in photos:
         for keyword in categories(photo.keywords):
