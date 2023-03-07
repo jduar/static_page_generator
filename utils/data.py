@@ -1,12 +1,13 @@
-from collections import defaultdict
+from collections import OrderedDict, defaultdict
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, List
+from typing import List
 
-import settings
 from exif import Image
 from iptcinfo3 import IPTCInfo
 from PIL import Image as PILImage
+
+import settings
 
 
 class Photo:
@@ -46,12 +47,12 @@ class Photo:
         return ", ".join(self.keywords)
 
 
-def photos_per_keyword(photos: List[Photo]) -> Dict[str, List[Photo]]:
+def photos_per_keyword(photos: List[Photo]) -> OrderedDict[str, List[Photo]]:
     keyword_photos = defaultdict(list)
     for photo in photos:
         for keyword in categories(photo.keywords):
             keyword_photos[keyword].append(photo)
-    return keyword_photos
+    return OrderedDict(sorted(keyword_photos.items()))
 
 
 def categories(keywords: List[str]) -> List[str]:
