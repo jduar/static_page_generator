@@ -1,7 +1,7 @@
 from collections import OrderedDict, defaultdict
 from datetime import datetime
 from pathlib import Path
-from typing import List
+from typing import Dict, List
 
 from exif import Image
 from iptcinfo3 import IPTCInfo
@@ -47,7 +47,7 @@ class Photo:
         return ", ".join(self.keywords)
 
 
-def photos_per_keyword(photos: List[Photo]) -> OrderedDict[str, List[Photo]]:
+def photos_per_keyword(photos: List[Photo]) -> Dict[str, List[Photo]]:
     keyword_photos = defaultdict(list)
     for photo in photos:
         for keyword in categories(photo.keywords):
