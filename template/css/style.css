@@ -91,6 +91,10 @@ li {
   width: 100%;
 }
 
+.jsonly {
+    display: none;
+}
+
 a {
   display: inline-block;
   color: rgb(104, 104, 104);

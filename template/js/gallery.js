@@ -1,27 +1,23 @@
 var preferMaxHeight = 450;
-var padding = 5;
+const padding = 5;
 
-window.addEventListener("load", () => {
-  buildGallery();
-});
-window.onresize = buildGallery;
+window.addEventListener("load", buildGallery);
+window.addEventListener("resize", buildGallery);
 
 function buildGallery() {
-  var windowWidth = window.innerWidth;
-  // We only need CSS on small screens.
-  var gallery = document.getElementById("gallery");
+  const gallery = document.getElementById("gallery");
 
   if (gallery) {
-    var images = document.getElementsByClassName("image-outer");
+    const images = gallery.querySelectorAll(".image-outer");
+    const maxWidth = gallery.offsetWidth - 1;
 
-    var maxWidth = gallery.offsetWidth - 1;
     let rowWidth = 0;
     let positionInRow = 0;
 
-    for (let img_index = 0; img_index < images.length; img_index++) {
-      let image_wrapper = images[img_index];
-      let image = getImageWithin(image_wrapper);
-      let proposedWidth = calculateWidth(image);
+    images.forEach((element, index) => {
+      const image = getImageWithin(element);
+      image.classList.toggle("jsonly");
+      const proposedWidth = calculateHeight(image);
 
       if (rowWidth + proposedWidth + 2 * padding <= maxWidth) {
         rowWidth += proposedWidth;
@@ -30,26 +26,26 @@ function buildGallery() {
         rowWidth + proposedWidth + 2 * padding > maxWidth &&
         positionInRow === 0
       ) {
-        image_wrapper.style.height = calculateHeight(image, maxWidth);
+        element.style.height = calculateHeight(image, maxWidth);
       } else if (
         rowWidth + proposedWidth + 2 * padding > maxWidth &&
         positionInRow > 0
       ) {
         var imagesToAdjust = [];
         for (let position = 0; position <= positionInRow; position++) {
-          imagesToAdjust.push(images[img_index - (positionInRow - position)]);
+          imagesToAdjust.push(images[index - (positionInRow - position)]);
         }
         adjustImagesToFit(imagesToAdjust, maxWidth);
         rowWidth = 0;
         positionInRow = 0;
       }
       loadImage(image);
-    }
+    });
   }
 }
 
 function getImageWithin(div) {
-  return div.getElementsByClassName("gallery-image")[0];
+  return div.querySelector(".gallery-image");
 }
 
 function calculateWidth(image, height = preferMaxHeight) {
