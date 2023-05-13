@@ -7,7 +7,6 @@ window.addEventListener("resize", buildGallery);
 var observer = null;
 
 if ('IntersectionObserver' in window) {
-  console.log("intersection");
   const intersectOptions = {
     rootMargin: "100px",
     threshold: 0.1
@@ -27,7 +26,7 @@ function buildGallery() {
 
     images.forEach((element, index) => {
       const image = getImageWithin(element);
-      image.parentElement.classList.toggle("jsonly");
+      image.classList.remove("jsonly");
       const proposedWidth = calculateWidth(image);
 
       if (rowWidth + proposedWidth + 2 * padding <= maxWidth) {
@@ -114,7 +113,6 @@ function loadImage(image) {
 function onIntersection(elements) {
   elements.forEach((element) => {
     if (element.intersectionRatio > 0) {
-      console.log("intersected!");
       loadImage(element.target);
       observer.unobserve(element.target);
     }
