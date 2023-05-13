@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block body %}
-  <div>
+  <div class="photo-page">
     <a href={{ photo.path }}>
       <img class="image" src={{ photo.path }}>
     </a>
@@ -18,7 +18,7 @@
           {{ photo.get_focal_length() }}
         {% endif %}
       </p>
-      <p class="small-font">{{ photo.get_keywords() }}</p>
+      <p class="small-font tag">{{ photo.get_keywords() }}</p>
     </div>
   </div>
 {% endblock %}
