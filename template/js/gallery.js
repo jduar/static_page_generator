@@ -4,6 +4,17 @@ const padding = 5;
 window.addEventListener("load", buildGallery);
 window.addEventListener("resize", buildGallery);
 
+var observer = null;
+
+if ('IntersectionObserver' in window) {
+  console.log("intersection");
+  const intersectOptions = {
+    rootMargin: "100px",
+    threshold: 0.1
+  };
+  observer = new IntersectionObserver(onIntersection, intersectOptions);
+}
+
 function buildGallery() {
   const gallery = document.getElementById("gallery");
 
@@ -39,7 +50,11 @@ function buildGallery() {
         rowWidth = 0;
         positionInRow = 0;
       }
-      loadImage(image);
+      if (observer) {
+        observer.observe(image);
+      } else {
+        loadImage(image);
+      }
     });
   }
 }
@@ -94,4 +109,14 @@ function setPreferredMaxHeight() {
 
 function loadImage(image) {
   image.src = image.getAttribute("data-src");
+}
+
+function onIntersection(elements) {
+  elements.forEach((element) => {
+    if (element.intersectionRatio > 0) {
+      console.log("intersected!");
+      loadImage(element.target);
+      observer.unobserve(element.target);
+    }
+  });
 }
