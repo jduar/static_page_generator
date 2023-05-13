@@ -27,7 +27,7 @@ function buildGallery() {
 
     images.forEach((element, index) => {
       const image = getImageWithin(element);
-      // image.classList.toggle("jsonly");
+      image.parentElement.classList.toggle("jsonly");
       const proposedWidth = calculateWidth(image);
 
       if (rowWidth + proposedWidth + 2 * padding <= maxWidth) {

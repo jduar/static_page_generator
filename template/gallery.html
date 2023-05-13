@@ -3,7 +3,9 @@
     {% for photo in photos %}
       <li class="image-outer">
         <a href={{ photo.page }}>
-          <img class="photo gallery-image" data-src={{ photo.photo }} width={{ photo.width }} height={{ photo.height }} loading="lazy">
+          <div class="jsonly">
+            <img class="photo gallery-image" data-src={{ photo.photo }} width={{ photo.width }} height={{ photo.height }} loading="lazy">
+          </div>
           <noscript>
             <img class="photo gallery-image" src={{ photo.photo }} loading="lazy">
           </noscript>
