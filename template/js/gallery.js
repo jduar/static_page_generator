@@ -7,6 +7,7 @@ window.addEventListener("resize", buildGallery);
 var observer = null;
 
 if ('IntersectionObserver' in window) {
+  console.log("intersector loaded...")
   const intersectOptions = {
     rootMargin: "100px",
     threshold: 0.1
@@ -16,6 +17,7 @@ if ('IntersectionObserver' in window) {
 
 function buildGallery() {
   const gallery = document.getElementById("gallery");
+  const windowWidth = window.innerWidth;
 
   if (gallery) {
     const images = gallery.querySelectorAll(".image-outer");
@@ -26,29 +28,34 @@ function buildGallery() {
 
     images.forEach((element, index) => {
       const image = getImageWithin(element);
-      image.classList.remove("jsonly");
-      const proposedWidth = calculateWidth(image);
 
-      if (rowWidth + proposedWidth + 2 * padding <= maxWidth) {
-        rowWidth += proposedWidth;
-        positionInRow++;
-      } else if (
-        rowWidth + proposedWidth + 2 * padding > maxWidth &&
-        positionInRow === 0
-      ) {
-        element.style.height = calculateHeight(image, maxWidth);
-      } else if (
-        rowWidth + proposedWidth + 2 * padding > maxWidth &&
-        positionInRow > 0
-      ) {
-        var imagesToAdjust = [];
-        for (let position = 0; position <= positionInRow; position++) {
-          imagesToAdjust.push(images[index - (positionInRow - position)]);
+      // If we're on mobile, let the CSS do its thing.
+      if (windowWidth > 865) {
+        image.classList.remove("jsonly");
+        const proposedWidth = calculateWidth(image);
+
+        if (rowWidth + proposedWidth + 2 * padding <= maxWidth) {
+          rowWidth += proposedWidth;
+          positionInRow++;
+        } else if (
+          rowWidth + proposedWidth + 2 * padding > maxWidth &&
+          positionInRow === 0
+        ) {
+          element.style.height = calculateHeight(image, maxWidth);
+        } else if (
+          rowWidth + proposedWidth + 2 * padding > maxWidth &&
+          positionInRow > 0
+        ) {
+          var imagesToAdjust = [];
+          for (let position = 0; position <= positionInRow; position++) {
+            imagesToAdjust.push(images[index - (positionInRow - position)]);
+          }
+          adjustImagesToFit(imagesToAdjust, maxWidth);
+          rowWidth = 0;
+          positionInRow = 0;
         }
-        adjustImagesToFit(imagesToAdjust, maxWidth);
-        rowWidth = 0;
-        positionInRow = 0;
       }
+
       if (observer) {
         observer.observe(image);
       } else {
@@ -107,6 +114,7 @@ function setPreferredMaxHeight() {
 }
 
 function loadImage(image) {
+  console.log("loading image...")
   image.src = image.getAttribute("data-src");
 }
 
