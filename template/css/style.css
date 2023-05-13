@@ -91,10 +91,6 @@ li {
   width: 100%;
 }
 
-.jsonly {
-    display: none;
-}
-
 a {
   display: inline-block;
   color: rgb(104, 104, 104);
@@ -176,6 +172,10 @@ a:focus {
 
   .photo-page {
     padding-top: 10px;
+  }
+
+  .jsonly {
+    display: none;
   }
 }
 
