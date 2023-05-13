@@ -7,7 +7,6 @@ window.addEventListener("resize", buildGallery);
 var observer = null;
 
 if ('IntersectionObserver' in window) {
-  console.log("intersector loaded...")
   const intersectOptions = {
     rootMargin: "100px",
     threshold: 0.1
@@ -114,7 +113,6 @@ function setPreferredMaxHeight() {
 }
 
 function loadImage(image) {
-  console.log("loading image...")
   image.src = image.getAttribute("data-src");
 }
 
