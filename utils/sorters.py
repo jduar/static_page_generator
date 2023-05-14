@@ -10,10 +10,13 @@ class OrderMethod:
     COLOR = "color"
 
 
-def sort_photos(photos: List[Photo], order_method: str, reverse_order=True):
-    sorting_map = {"date": date_sort,
-                   "color": color_sort,
-                   }
+def sort_photos(
+    photos: List[Photo], order_method: str, reverse_order: bool = True
+) -> List[Photo]:
+    sorting_map = {
+        "date": date_sort,
+        "color": color_sort,
+    }
     try:
         return sorting_map[order_method](photos, reverse_order)
 
@@ -32,4 +35,3 @@ def color_sort(photos: List[Photo], reverse_order: bool) -> List[Photo]:
         photo_list.append((photo, ImageStat.Stat(H).mean))
     sorted_list = sorted(photo_list, key=lambda x: x[1], reverse=reverse_order)
     return [image[0] for image in sorted_list]
-
