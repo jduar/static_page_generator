@@ -1,5 +1,5 @@
 body {
-  padding: 10px 25px 10px 25px;
+  padding: 10px 0;
   background-color: #f5f5f5;
   font-family: "Courier New", monospace, Helvetica, verdana, sans-serif;
 }
@@ -15,8 +15,9 @@ li {
 }
 
 .pages {
-  width: 100%;
   flex-direction: row;
+  padding-right: 25px;
+  padding-left: 25px;
 }
 
 .pages a {
@@ -82,17 +83,12 @@ li {
 }
 
 .title {
-  padding-top: 20px;
-  padding-bottom: 15px;
+  padding: 20px 25px 15px 25px;
   font-size: 1.5em;
 }
 
 .gallery-image {
   width: 100%;
-}
-
-.jsonly {
-    display: none;
 }
 
 a {
@@ -105,8 +101,17 @@ a:focus {
   color: rgb(138, 178, 218);
 }
 
+.photo-page {
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
 .small-font {
   font-size: small;
+}
+
+.tag {
+  font-style: italic;
 }
 
 .image {
@@ -118,10 +123,16 @@ a:focus {
 }
 
 @media only screen and (min-width: 865px) {
+  body {
+    padding: 10px 25px 10px 25px;
+  }
+
   .pages {
       display: flex;
       flex-direction: column;
       width: 20%;
+      padding-right: 0;
+      padding-left: 0;
   }
 
   .pages ul {
@@ -158,9 +169,17 @@ a:focus {
   .top-space {
     margin-top: 20px;
   }
+
+  .photo-page {
+    padding-top: 10px;
+  }
+
+  .jsonly {
+    display: none;
+  }
 }
 
-@media only screen and (min-width: 1080px) {
+@media only screen and (min-width: 1084px) {
   .image-gallery > li {
     height: 290px;
   }
