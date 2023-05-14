@@ -91,10 +91,6 @@ li {
   width: 100%;
 }
 
-.jsonly {
-    display: none;
-}
-
 a {
   display: inline-block;
   color: rgb(104, 104, 104);
@@ -105,8 +101,17 @@ a:focus {
   color: rgb(138, 178, 218);
 }
 
+.photo-page {
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
 .small-font {
   font-size: small;
+}
+
+.tag {
+  font-style: italic;
 }
 
 .image {
@@ -163,6 +168,14 @@ a:focus {
 
   .top-space {
     margin-top: 20px;
+  }
+
+  .photo-page {
+    padding-top: 10px;
+  }
+
+  .jsonly {
+    display: none;
   }
 }
 
