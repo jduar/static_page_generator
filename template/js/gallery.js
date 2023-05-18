@@ -2,21 +2,12 @@ var preferMaxHeight = 450;
 const padding = 5;
 
 window.addEventListener("load", buildGallery);
-window.addEventListener("resize", buildGallery);
-
-var observer = null;
-
-if ('IntersectionObserver' in window) {
-  const intersectOptions = {
-    rootMargin: "100px",
-    threshold: 0.1
-  };
-  observer = new IntersectionObserver(onIntersection, intersectOptions);
+if (desktop(window.innerWidth) === true) {
+  window.addEventListener("resize", buildGallery);
 }
 
 function buildGallery() {
   const gallery = document.getElementById("gallery");
-  const windowWidth = window.innerWidth;
 
   if (gallery) {
     const images = gallery.querySelectorAll(".image-outer");
@@ -27,10 +18,10 @@ function buildGallery() {
 
     images.forEach((element, index) => {
       const image = getImageWithin(element);
+      image.classList.remove("jsonly");
 
       // If we're on mobile, let the CSS do its thing.
-      if (windowWidth > 865) {
-        image.classList.remove("jsonly");
+      if (desktop(window.innerWidth) === true) {
         const proposedWidth = calculateWidth(image);
 
         if (rowWidth + proposedWidth + 2 * padding <= maxWidth) {
@@ -53,12 +44,6 @@ function buildGallery() {
           rowWidth = 0;
           positionInRow = 0;
         }
-      }
-
-      if (observer) {
-        observer.observe(image);
-      } else {
-        loadImage(image);
       }
     });
   }
@@ -112,15 +97,6 @@ function setPreferredMaxHeight() {
   }
 }
 
-function loadImage(image) {
-  image.src = image.getAttribute("data-src");
-}
-
-function onIntersection(elements) {
-  elements.forEach((element) => {
-    if (element.intersectionRatio > 0) {
-      loadImage(element.target);
-      observer.unobserve(element.target);
-    }
-  });
+function desktop(width) {
+  return width >= 865 ? true : false;
 }
