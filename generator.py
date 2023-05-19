@@ -18,6 +18,7 @@ class SiteGenerator:
         load_dotenv()
         self.image_path = Path(getenv("PICTURES_FOLDER"))
         self.pages_path = Path(getenv("PAGES_FOLDER"))
+        self.icon_path = Path(getenv("FAVICON"))
         self.env = Environment(loader=FileSystemLoader("template"))
         self.cleanup()
         self.copy_static()
@@ -43,6 +44,7 @@ class SiteGenerator:
     def copy_static(self):
         shutil.copytree("template/css", "public/css")
         shutil.copytree("template/js", "public/js")
+        shutil.copy(self.icon_path, "public/favicon.svg")
 
     def render_page(self, title: str, content: str):
         template = self.env.get_template("main_layout.html")
