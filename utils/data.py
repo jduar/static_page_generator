@@ -6,6 +6,7 @@ from typing import Dict, List
 from exif import Image
 from iptcinfo3 import IPTCInfo
 from PIL import Image as PILImage
+from PIL import ImageOps
 
 import settings
 
@@ -16,6 +17,7 @@ class Photo:
         self.path = Path("images") / path.name  # path inside container
         self.get_exif_data()
         self.get_image_size()
+        print("\nsize:", self.width, self.height, self.local_path)
 
     def get_exif_data(self) -> None:
         image_data = Image(self.local_path)
@@ -25,9 +27,14 @@ class Photo:
         self.keywords = [
             keyword.decode("utf-8") for keyword in IPTCInfo(self.local_path)["keywords"]
         ]
+        self.orientation = image_data.get("orientation")
 
     def get_image_size(self) -> None:
         image = PILImage.open(self.local_path)
+        # Some photos that had been exported straight from camera contained the orientation as
+        # an exif tag and needed being transposed to appear correctly
+        if self.orientation:
+            image = ImageOps.exif_transpose(image)
         self.width, self.height = image.size
 
     def get_original_date(self) -> str:

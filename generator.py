@@ -8,6 +8,7 @@ from typing import List
 import markdown
 from dotenv import load_dotenv
 from jinja2 import Environment, FileSystemLoader
+import settings
 
 from utils.data import Photo, photos_per_keyword
 from utils.sorters import OrderMethod, sort_photos
@@ -24,6 +25,7 @@ class SiteGenerator:
         self.copy_static()
         self.photos = self.gather_photos(self.image_path)
         self.photo_sections = photos_per_keyword(self.photos)
+        self.site_title = settings.TITLE
 
         self.text_paths = self.text_paths()
         self.text_page_names = [
@@ -57,6 +59,7 @@ class SiteGenerator:
                 text_pages=self.text_page_names,
                 photo_pages=self.photo_sections.keys(),
                 page=page,
+                site_title=self.site_title,
             )
             file.write(html)
 
