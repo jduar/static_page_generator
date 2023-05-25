@@ -2,7 +2,6 @@ name: Generate example
 on:
   push:
     branches: [ "master" ]
-  generate:
 
 jobs:
   build:
