@@ -4,16 +4,6 @@ body {
   font-family: "Courier New", monospace, Helvetica, verdana, sans-serif;
 }
 
-ul {
-  padding-left: 0;
-  margin-top: 0;
-}
-
-li {
-  list-style-type: none;
-  padding: 5px;
-}
-
 .pages {
   flex-direction: row;
   padding-right: 25px;
@@ -27,13 +17,17 @@ li {
 }
 
 .pages ul {
+  padding-left: 0;
+  margin-top: 0;
   list-style: none;
 }
 
 .pages li {
   float: left;
+  padding: 5px;
   padding-left: 0px;
   padding-right: 0px;
+  list-style-type: none;
 }
 
 .horizontal {
@@ -50,6 +44,16 @@ li {
 .gallery {
   padding-right: 10px;
   padding-left: 10px;
+}
+
+.gallery ul {
+  padding-left: 0;
+  margin-top: 0;
+}
+
+.gallery li {
+  list-style-type: none;
+  padding: 5px;
 }
 
 .title {
