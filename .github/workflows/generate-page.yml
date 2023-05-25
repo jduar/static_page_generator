@@ -20,6 +20,7 @@ jobs:
       - name: Generate files
         run: |
           pip install -r requirements.txt
+          ls
           python3 generator.py
 
       - name: Init new repo and commit generated files
