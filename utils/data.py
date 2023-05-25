@@ -1,3 +1,4 @@
+import logging
 from collections import OrderedDict, defaultdict
 from datetime import datetime
 from pathlib import Path
@@ -10,6 +11,10 @@ from PIL import ImageOps
 
 import settings
 
+# Default logging level generates a bunch of IPTC warnings
+iptcinfo_logger = logging.getLogger("iptcinfo")
+iptcinfo_logger.setLevel(logging.ERROR)
+
 
 class Photo:
     def __init__(self, path: Path):
@@ -17,7 +22,6 @@ class Photo:
         self.path = Path("images") / path.name  # path inside container
         self.get_exif_data()
         self.get_image_size()
-        print("\nsize:", self.width, self.height, self.local_path)
 
     def get_exif_data(self) -> None:
         image_data = Image(self.local_path)

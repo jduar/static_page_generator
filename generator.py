@@ -8,8 +8,8 @@ from typing import List
 import markdown
 from dotenv import load_dotenv
 from jinja2 import Environment, FileSystemLoader
-import settings
 
+import settings
 from utils.data import Photo, photos_per_keyword
 from utils.sorters import OrderMethod, sort_photos
 
@@ -101,7 +101,12 @@ class SiteGenerator:
                 self.render_page(path.stem, html_content)
 
         for section in self.photo_sections:
-            self.render_page(section, self.render_gallery(self.photo_sections[section], sorting=OrderMethod.DATE))
+            self.render_page(
+                section,
+                self.render_gallery(
+                    self.photo_sections[section], sorting=OrderMethod.DATE
+                ),
+            )
 
     def text_paths(self) -> List[Path]:
         """Returns list of text page paths."""
