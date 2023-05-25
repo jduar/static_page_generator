@@ -9,6 +9,7 @@ import markdown
 from dotenv import load_dotenv
 from jinja2 import Environment, FileSystemLoader
 
+import settings
 from utils.data import Photo, photos_per_keyword
 from utils.sorters import OrderMethod, sort_photos
 
@@ -18,11 +19,13 @@ class SiteGenerator:
         load_dotenv()
         self.image_path = Path(getenv("PICTURES_FOLDER"))
         self.pages_path = Path(getenv("PAGES_FOLDER"))
+        self.icon_path = Path(getenv("FAVICON"))
         self.env = Environment(loader=FileSystemLoader("template"))
         self.cleanup()
         self.copy_static()
         self.photos = self.gather_photos(self.image_path)
         self.photo_sections = photos_per_keyword(self.photos)
+        self.site_title = settings.TITLE
 
         self.text_paths = self.text_paths()
         self.text_page_names = [
@@ -43,6 +46,7 @@ class SiteGenerator:
     def copy_static(self):
         shutil.copytree("template/css", "public/css")
         shutil.copytree("template/js", "public/js")
+        shutil.copy(self.icon_path, "public/favicon.svg")
 
     def render_page(self, title: str, content: str):
         template = self.env.get_template("main_layout.html")
@@ -55,6 +59,7 @@ class SiteGenerator:
                 text_pages=self.text_page_names,
                 photo_pages=self.photo_sections.keys(),
                 page=page,
+                site_title=self.site_title,
             )
             file.write(html)
 
@@ -96,7 +101,12 @@ class SiteGenerator:
                 self.render_page(path.stem, html_content)
 
         for section in self.photo_sections:
-            self.render_page(section, self.render_gallery(self.photo_sections[section], sorting=OrderMethod.DATE))
+            self.render_page(
+                section,
+                self.render_gallery(
+                    self.photo_sections[section], sorting=OrderMethod.DATE
+                ),
+            )
 
     def text_paths(self) -> List[Path]:
         """Returns list of text page paths."""

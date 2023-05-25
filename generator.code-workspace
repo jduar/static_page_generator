@@ -1,0 +1,22 @@
+{
+	"folders": [
+        {
+            "path": "."
+        }
+    ],
+    "settings": {
+        "[javascript]": {
+            "editor.tabSize": 2
+        },
+        "[html]": {
+            "editor.tabSize": 2
+        },
+        "filewatcher.commands": [
+            {
+                "match": "(\\.py*)*(\\.html*)*(\\.css*)*(\\.js*)*",
+                "cmd": "cd '${workspaceRoot}'; source 'venv/bin/activate'; python3 generator.py",
+                "event": "onFileChange"
+            }
+        ]
+    }
+}
