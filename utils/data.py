@@ -1,3 +1,4 @@
+import logging
 from collections import OrderedDict, defaultdict
 from datetime import datetime
 from pathlib import Path
@@ -6,8 +7,13 @@ from typing import Dict, List
 from exif import Image
 from iptcinfo3 import IPTCInfo
 from PIL import Image as PILImage
+from PIL import ImageOps
 
 import settings
+
+# Default logging level generates a bunch of IPTC warnings
+iptcinfo_logger = logging.getLogger("iptcinfo")
+iptcinfo_logger.setLevel(logging.ERROR)
 
 
 class Photo:
@@ -25,9 +31,14 @@ class Photo:
         self.keywords = [
             keyword.decode("utf-8") for keyword in IPTCInfo(self.local_path)["keywords"]
         ]
+        self.orientation = image_data.get("orientation")
 
     def get_image_size(self) -> None:
         image = PILImage.open(self.local_path)
+        # Some photos that had been exported straight from camera contained the orientation as
+        # an exif tag and needed being transposed to appear correctly
+        if self.orientation:
+            image = ImageOps.exif_transpose(image)
         self.width, self.height = image.size
 
     def get_original_date(self) -> str:
