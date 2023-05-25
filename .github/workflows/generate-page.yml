@@ -17,12 +17,15 @@ jobs:
           echo "PICTURES_FOLDER=./example_content/images" >> .env
           echo "FAVICON=./example_content/favicon.ico" >> .env
       
-      - name: Generate files
-        run: |
-          pip install -r requirements.txt
-          ls
-          python3 generator.py
-
+      - name: Setup pypthon
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          cache: 'pip' # caching pip dependencies
+      - run: pip install -r requirements.txt
+      - run: python3 generator.py
+      
       - name: Init new repo and commit generated files
         run: |
           mv ./example_content/images ./public/images
