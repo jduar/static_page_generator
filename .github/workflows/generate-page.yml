@@ -17,7 +17,6 @@ jobs:
           echo "PICTURES_FOLDER=./example_content/images" >> .env
           echo "FAVICON=./example_content/favicon.ico" >> .env
       
-      - name: Setup pypthon
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
         with:
