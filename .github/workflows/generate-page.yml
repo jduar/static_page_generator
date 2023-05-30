@@ -1,4 +1,4 @@
-name: Generate example
+name: Generate example website and deploy
 on:
   push:
     branches: [ "master" ]
