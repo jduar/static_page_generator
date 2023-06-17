@@ -7,3 +7,4 @@ MarkupSafe==2.1.2
 Pillow==9.5.0
 python-dotenv==1.0.0
 ruff==0.0.267
+yoga==1.2.2
