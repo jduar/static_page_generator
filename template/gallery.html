@@ -3,9 +3,9 @@
     {% for photo in photos %}
       <li class="image-outer">
         <a href={{ photo.page }} class="mobile-lazy-loading">
-          <img class="photo gallery-image jsonly" loading="lazy" src={{ photo.photo }} width={{ photo.width }} height={{ photo.height }}>
+          <img class="photo gallery-image jsonly" loading="lazy" src={{ photo.photo_small }} width={{ photo.width }} height={{ photo.height }}>
           <noscript>
-            <img class="photo gallery-image" src={{ photo.photo }}>
+            <img class="photo gallery-image" src={{ photo.photo_small }}>
           </noscript>
         </a>
       </li>
