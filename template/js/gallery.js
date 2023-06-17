@@ -25,7 +25,7 @@ function buildGallery() {
         const proposedWidth = calculateWidth(image);
 
         if (rowWidth + proposedWidth + 2 * padding <= maxWidth) {
-          rowWidth += proposedWidth;
+          rowWidth += proposedWidth + 2 * padding;
           positionInRow++;
         } else if (
           rowWidth + proposedWidth + 2 * padding > maxWidth &&
