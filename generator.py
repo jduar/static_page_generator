@@ -3,7 +3,6 @@
 import shutil
 from os import getenv
 from pathlib import Path
-from typing import List
 
 import markdown
 from dotenv import load_dotenv
@@ -34,7 +33,7 @@ class SiteGenerator:
         self.render_content()
         print(" * Successfully generated site.")
 
-    def cleanup(self):
+    def cleanup(self) -> None:
         public = Path("public")
         public.mkdir(exist_ok=True, parents=True)
         for path in public.iterdir():
@@ -43,12 +42,12 @@ class SiteGenerator:
             else:
                 path.unlink()
 
-    def copy_static(self):
+    def copy_static(self) -> None:
         shutil.copytree("template/css", "public/css")
         shutil.copytree("template/js", "public/js")
         shutil.copy(self.icon_path, "public/favicon.svg")
 
-    def render_page(self, title: str, content: str):
+    def render_page(self, title: str, content: str) -> None:
         template = self.env.get_template("main_layout.html")
 
         link = f"public/{title}.html"
@@ -63,7 +62,7 @@ class SiteGenerator:
             )
             file.write(html)
 
-    def render_gallery(self, photos: List[Photo], sorting: str = None):
+    def render_gallery(self, photos: list[Photo], sorting: str = None) -> None:
         if sorting:
             photos = sort_photos(photos, sorting)
         photo_context = []
@@ -80,13 +79,13 @@ class SiteGenerator:
         template = self.env.get_template("gallery.html")
         return template.render(photos=photo_context)
 
-    def render_photo_page(self, photo: Photo):
+    def render_photo_page(self, photo: Photo) -> None:
         template = self.env.get_template("photo.html")
         with open(f"public/{photo.path.stem}.html", "w+") as file:
             html = template.render(photo=photo)
             file.write(html)
 
-    def render_content(self):
+    def render_content(self) -> None:
         self.render_page(
             title="index",
             content=self.render_gallery(self.photos, sorting=OrderMethod.DATE),
@@ -108,11 +107,11 @@ class SiteGenerator:
                 ),
             )
 
-    def text_paths(self) -> List[Path]:
+    def text_paths(self) -> list[Path]:
         """Returns list of text page paths."""
         return list(self.pages_path.iterdir())
 
-    def gather_photos(self, path: Path) -> List[Photo]:
+    def gather_photos(self, path: Path) -> list[Photo]:
         return [Photo(image) for image in path.iterdir()]
 
 

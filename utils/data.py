@@ -2,7 +2,6 @@ import logging
 from collections import OrderedDict, defaultdict
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, List
 
 from exif import Image
 from iptcinfo3 import IPTCInfo
@@ -58,7 +57,7 @@ class Photo:
         return ", ".join(self.keywords)
 
 
-def photos_per_keyword(photos: List[Photo]) -> Dict[str, List[Photo]]:
+def photos_per_keyword(photos: list[Photo]) -> dict[str, list[Photo]]:
     keyword_photos = defaultdict(list)
     for photo in photos:
         for keyword in categories(photo.keywords):
@@ -66,7 +65,7 @@ def photos_per_keyword(photos: List[Photo]) -> Dict[str, List[Photo]]:
     return OrderedDict(sorted(keyword_photos.items()))
 
 
-def categories(keywords: List[str]) -> List[str]:
+def categories(keywords: list[str]) -> list[str]:
     if not settings.USE_CATEGORIES or not settings.CATEGORIES:
         return keywords
     else:
