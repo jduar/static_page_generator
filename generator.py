@@ -71,6 +71,7 @@ class SiteGenerator:
             photo_context.append(
                 {
                     "photo": photo.path,
+                    "photo_small": photo.thumbnail_path,
                     "page": f"{photo.path.stem}.html",
                     "width": photo.width,
                     "height": photo.height,
