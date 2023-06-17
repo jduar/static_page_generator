@@ -54,7 +54,7 @@ class Photo:
 
     def optimize_image(self) -> None:
         print(f" * Generating thumbnail... {self.local_path.stem}")
-        # TOOD: Save images on specific images directory, not public.
+        # TODO: Save images on specific images directory, not public.
         thumbnail_path = f"{self.local_path.stem}_thumbnail{self.local_path.suffix}"
         image.optimize(
             str(self.local_path),
