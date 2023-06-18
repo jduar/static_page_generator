@@ -1,5 +1,3 @@
-from typing import List
-
 from PIL import Image, ImageStat
 
 from .data import Photo
@@ -11,8 +9,8 @@ class OrderMethod:
 
 
 def sort_photos(
-    photos: List[Photo], order_method: str, reverse_order: bool = True
-) -> List[Photo]:
+    photos: list[Photo], order_method: str, reverse_order: bool = True
+) -> list[Photo]:
     sorting_map = {
         "date": date_sort,
         "color": color_sort,
@@ -24,11 +22,11 @@ def sort_photos(
         print("Can't recognize sorting option, skipping it!")
 
 
-def date_sort(photos: List[Photo], reverse_order: bool) -> List[Photo]:
+def date_sort(photos: list[Photo], reverse_order: bool) -> list[Photo]:
     return sorted(photos, key=lambda x: x.original_date, reverse=reverse_order)
 
 
-def color_sort(photos: List[Photo], reverse_order: bool) -> List[Photo]:
+def color_sort(photos: list[Photo], reverse_order: bool) -> list[Photo]:
     photo_list = []
     for photo in photos:
         H, _, _ = Image.open(photo.path).convert("RGB").convert("HSV").split()
