@@ -16,12 +16,15 @@ iptcinfo_logger.setLevel(logging.ERROR)
 
 
 class Photo:
+    LIGHT_IMAGES_DIRECTORY = ".light_images"
+
     def __init__(self, path: Path):
         self.local_path = path  # local path
         self.path = Path("images") / path.name  # path inside container
         self.get_exif_data()
         self.get_image_size()
-        self.optimize_image()
+        if Path.is_file(self.get_image_light_path()):
+            self.light_path = self.get_image_light_path()
 
     def get_exif_data(self) -> None:
         image_data = Image(self.local_path)
@@ -52,20 +55,27 @@ class Photo:
     def get_keywords(self) -> str:
         return ", ".join(self.keywords)
 
-    def optimize_image(self) -> None:
-        print(f" * Generating thumbnail... {self.local_path.stem}")
-        # TODO: Save images on specific images directory, not public.
-        thumbnail_path = f"{self.local_path.stem}_thumbnail{self.local_path.suffix}"
-        image.optimize(
-            str(self.local_path),
-            str(Path("public") / thumbnail_path),
-            options={
-                "output_format": "orig",
-                "resize": [512, 512],
-                "jpeg_quality": 0.9,
-            },
-        )
-        self.thumbnail_path = thumbnail_path
+    def get_image_light_path(self) -> Path:
+        """Returns Path for the lighter version of the image, whether it exists or not."""
+        return Path(LIGHT_IMAGES_DIRECTORY) / f"{self.local_path.stem}_light{self.local_path.suffix}"
+
+
+def optimize_images(self, images, force: bool = False) -> None:
+    print(" * Generating lighter images...")
+    for image in images:
+        if
+
+def optimize_image(image: Photo) -> None:
+    print(f"   * Generating lighter version of image {self.local_path.stem} ...")
+    image.optimize(
+        str(self.local_path),
+        str(self.get_image_light_path()),
+        options={
+            "output_format": "orig",
+            "resize": [512, 512],
+            "jpeg_quality": 0.9,
+        },
+    )
 
 
 def photos_per_keyword(photos: list[Photo]) -> dict[str, list[Photo]]:
