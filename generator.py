@@ -77,6 +77,8 @@ class SiteGenerator:
                     "height": photo.height,
                 }
             )
+            if photo.light_path:
+                photo_context[-1]["light_path"] = photo.light_path
         template = self.env.get_template("gallery.html")
         return template.render(photos=photo_context)
 
