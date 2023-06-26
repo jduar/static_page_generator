@@ -14,6 +14,8 @@ import settings
 iptcinfo_logger = logging.getLogger("iptcinfo")
 iptcinfo_logger.setLevel(logging.ERROR)
 
+THUMBNAILS_DIRECTORY = "thumbnails"
+
 
 class Photo:
     def __init__(self, path: Path):
@@ -21,13 +23,18 @@ class Photo:
         self.path = Path("images") / path.name  # path inside container
         self.get_exif_data()
         self.get_image_size()
-        self.optimize_image()
+        self.thumbnail = (
+            get_image_thumbnail(self.local_path)
+            if Path.is_file(get_image_thumbnail(self.local_path))
+            else None
+        )
 
     def get_exif_data(self) -> None:
         image_data = Image(self.local_path)
         self.original_date = image_data.datetime_original
         self.aperture = image_data.get("aperture_value")
         self.focal_length = image_data.get("focal_length")
+        self.description = image_data.get("image_description", "")
         self.keywords = [
             keyword.decode("utf-8") for keyword in IPTCInfo(self.local_path)["keywords"]
         ]
@@ -52,20 +59,31 @@ class Photo:
     def get_keywords(self) -> str:
         return ", ".join(self.keywords)
 
-    def optimize_image(self) -> None:
-        print(f" * Generating thumbnail... {self.local_path.stem}")
-        # TODO: Save images on specific images directory, not public.
-        thumbnail_path = f"{self.local_path.stem}_thumbnail{self.local_path.suffix}"
-        image.optimize(
-            str(self.local_path),
-            str(Path("public") / thumbnail_path),
-            options={
-                "output_format": "orig",
-                "resize": [512, 512],
-                "jpeg_quality": 0.9,
-            },
-        )
-        self.thumbnail_path = thumbnail_path
+
+def get_image_thumbnail(local_path: Path) -> Path:
+    """Returns Path for the image thumbnails, whether it exists or not."""
+    return Path(THUMBNAILS_DIRECTORY) / f"{local_path.stem}_thumbnail{local_path.suffix}"
+
+
+def optimize_images(images: list[Path], force: bool = False) -> None:
+    print(" * Generating thumbnails...")
+    for image_path in images:
+        if Path.is_file(get_image_thumbnail(image_path)):
+            return
+        optimize_image(image_path)
+
+
+def optimize_image(image_path: Path) -> None:
+    print(f"   * Generating thumbnail for image {image.local_path.stem} ...")
+    image.optimize(
+        str(image_path),
+        str(get_image_thumbnail(image_path)),
+        options={
+            "output_format": "orig",
+            "resize": [512, 512],
+            "jpeg_quality": 0.9,
+        },
+    )
 
 
 def photos_per_keyword(photos: list[Photo]) -> dict[str, list[Photo]]:
