@@ -79,7 +79,7 @@ class SiteGenerator:
                     "page": f"{photo.path.stem}.html",
                     "width": photo.width,
                     "height": photo.height,
-                    "alt": photo.title,
+                    "alt": photo.description,
                 }
             )
         template = self.env.get_template("gallery.html")
