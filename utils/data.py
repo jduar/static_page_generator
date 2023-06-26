@@ -34,7 +34,7 @@ class Photo:
         self.original_date = image_data.datetime_original
         self.aperture = image_data.get("aperture_value")
         self.focal_length = image_data.get("focal_length")
-        self.title = image_data.get("title")
+        self.description = image_data.get("image_description", "")
         self.keywords = [
             keyword.decode("utf-8") for keyword in IPTCInfo(self.local_path)["keywords"]
         ]
