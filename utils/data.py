@@ -14,23 +14,27 @@ import settings
 iptcinfo_logger = logging.getLogger("iptcinfo")
 iptcinfo_logger.setLevel(logging.ERROR)
 
+THUMBNAILS_DIRECTORY = "thumbnails"
+
 
 class Photo:
-    LIGHT_IMAGES_DIRECTORY = ".light_images"
-
     def __init__(self, path: Path):
         self.local_path = path  # local path
         self.path = Path("images") / path.name  # path inside container
         self.get_exif_data()
         self.get_image_size()
-        if Path.is_file(self.get_image_light_path()):
-            self.light_path = self.get_image_light_path()
+        self.thumbnail = (
+            get_image_thumbnail(self.local_path)
+            if Path.is_file(get_image_thumbnail(self.local_path))
+            else None
+        )
 
     def get_exif_data(self) -> None:
         image_data = Image(self.local_path)
         self.original_date = image_data.datetime_original
         self.aperture = image_data.get("aperture_value")
         self.focal_length = image_data.get("focal_length")
+        self.title = image_data.get("title")
         self.keywords = [
             keyword.decode("utf-8") for keyword in IPTCInfo(self.local_path)["keywords"]
         ]
@@ -55,21 +59,25 @@ class Photo:
     def get_keywords(self) -> str:
         return ", ".join(self.keywords)
 
-    def get_image_light_path(self) -> Path:
-        """Returns Path for the lighter version of the image, whether it exists or not."""
-        return Path(LIGHT_IMAGES_DIRECTORY) / f"{self.local_path.stem}_light{self.local_path.suffix}"
+
+def get_image_thumbnail(local_path: Path) -> Path:
+    """Returns Path for the image thumbnails, whether it exists or not."""
+    return Path(THUMBNAILS_DIRECTORY) / f"{local_path.stem}_thumbnail{local_path.suffix}"
 
 
-def optimize_images(self, images, force: bool = False) -> None:
-    print(" * Generating lighter images...")
-    for image in images:
-        if
+def optimize_images(images: list[Path], force: bool = False) -> None:
+    print(" * Generating thumbnails...")
+    for image_path in images:
+        if Path.is_file(get_image_thumbnail(image_path)):
+            return
+        optimize_image(image_path)
 
-def optimize_image(image: Photo) -> None:
-    print(f"   * Generating lighter version of image {self.local_path.stem} ...")
+
+def optimize_image(image_path: Path) -> None:
+    print(f"   * Generating thumbnail for image {image.local_path.stem} ...")
     image.optimize(
-        str(self.local_path),
-        str(self.get_image_light_path()),
+        str(image_path),
+        str(get_image_thumbnail(image_path)),
         options={
             "output_format": "orig",
             "resize": [512, 512],
