@@ -12,6 +12,8 @@ import settings
 from utils.data import Photo, photos_per_keyword
 from utils.sorters import OrderMethod, sort_photos
 
+DESTINATION_DIR = "public"
+
 
 class SiteGenerator:
     def __init__(self):
@@ -20,40 +22,42 @@ class SiteGenerator:
         self.pages_path = Path(getenv("PAGES_FOLDER"))
         self.icon_path = Path(getenv("FAVICON"))
         self.env = Environment(loader=FileSystemLoader("template"))
-        self.cleanup()
-        self.copy_static()
         self.photos = self.gather_photos(self.image_path)
         self.photo_sections = photos_per_keyword(self.photos)
         self.site_title = settings.TITLE
-
         self.text_paths = self.text_paths()
         self.text_page_names = [
             path.stem for path in self.text_paths if path.stem != "index"
         ]
+
         self.render_content()
+        self.cleanup()
+        self.copy_content()
         print(" * Successfully generated site.")
 
     def cleanup(self) -> None:
-        public = Path("public")
-        public.mkdir(exist_ok=True, parents=True)
+        public = Path(DESTINATION_DIR)
         for path in public.iterdir():
             if path.is_dir():
                 shutil.rmtree(path)
             else:
                 path.unlink()
 
-    def copy_static(self) -> None:
-        shutil.copytree("template/css", "public/css")
-        shutil.copytree("template/js", "public/js")
-        shutil.copy(self.icon_path, "public/favicon.svg")
+    def copy_content(self) -> None:
+        dest_dir = Path(DESTINATION_DIR)
+        shutil.copytree("template/css", dest_dir / "css")
+        shutil.copytree("template/js", dest_dir / "js")
+        shutil.copy(self.icon_path, dest_dir / "favicon.svg")
+        for path in Path(".src/public").iterdir():  # Deleting the dir itself causes issues with docker
+            shutil.copy(path, Path(DESTINATION_DIR))
 
     def render_page(self, title: str, content: str) -> None:
         template = self.env.get_template("main_layout.html")
 
-        link = f"public/{title}.html"
+        link = f"{DESTINATION_DIR}/{title}.html"
         page = {"title": title, "link": link, "content": content}
 
-        with open(link, "w+") as file:
+        with open(Path(".src") / link, "w+") as file:
             html = template.render(
                 text_pages=self.text_page_names,
                 photo_pages=self.photo_sections.keys(),
@@ -71,24 +75,31 @@ class SiteGenerator:
             photo_context.append(
                 {
                     "photo": photo.path,
-                    "photo_small": photo.thumbnail_path,
+                    "thumbnail": photo.thumbnail if photo.thumbnail else photo.path,
                     "page": f"{photo.path.stem}.html",
                     "width": photo.width,
                     "height": photo.height,
+                    "alt": photo.title,
                 }
             )
-            if photo.light_path:
-                photo_context[-1]["light_path"] = photo.light_path
         template = self.env.get_template("gallery.html")
         return template.render(photos=photo_context)
 
     def render_photo_page(self, photo: Photo) -> None:
         template = self.env.get_template("photo.html")
-        with open(f"public/{photo.path.stem}.html", "w+") as file:
+        with open(Path(".src/public") / f"{photo.path.stem}.html", "w+") as file:
             html = template.render(photo=photo)
             file.write(html)
 
     def render_content(self) -> None:
+        generation_dir = Path(".src/public")
+        generation_dir.mkdir(exist_ok=True, parents=True)
+        for path in generation_dir.iterdir():
+            if path.is_dir():
+                shutil.rmtree(path)
+            else:
+                path.unlink()
+
         self.render_page(
             title="index",
             content=self.render_gallery(self.photos, sorting=OrderMethod.DATE),

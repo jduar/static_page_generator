@@ -1,5 +1,5 @@
 var preferMaxHeight = 450;
-const padding = 7;
+const padding = 10;
 
 window.addEventListener("load", buildGallery);
 if (desktop(window.innerWidth) === true) {
