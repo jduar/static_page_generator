@@ -68,19 +68,19 @@ def get_image_thumbnail(local_path: Path) -> Path:
 def optimize_images(images: list[Path], force: bool = False) -> None:
     print(" * Generating thumbnails...")
     for image_path in images:
-        if Path.is_file(get_image_thumbnail(image_path)):
+        if Path.is_file(get_image_thumbnail(image_path)) and not force:
             return
         optimize_image(image_path)
 
 
 def optimize_image(image_path: Path) -> None:
-    print(f"   * Generating thumbnail for image {image.local_path.stem} ...")
+    print(f"   * Generating thumbnail for image {image_path.stem} ...")
     image.optimize(
         str(image_path),
         str(get_image_thumbnail(image_path)),
         options={
             "output_format": "orig",
-            "resize": [512, 512],
+            "resize": [896, 896],
             "jpeg_quality": 0.9,
         },
     )

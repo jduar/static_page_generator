@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import argparse
 import shutil
 from os import getenv
 from pathlib import Path
@@ -9,7 +10,7 @@ from dotenv import load_dotenv
 from jinja2 import Environment, FileSystemLoader
 
 import settings
-from utils.data import Photo, photos_per_keyword
+from utils.data import Photo, optimize_images, photos_per_keyword
 from utils.sorters import OrderMethod, sort_photos
 
 DESTINATION_DIR = "public"
@@ -17,7 +18,6 @@ DESTINATION_DIR = "public"
 
 class SiteGenerator:
     def __init__(self):
-        load_dotenv()
         self.image_path = Path(getenv("PICTURES_FOLDER"))
         self.pages_path = Path(getenv("PAGES_FOLDER"))
         self.icon_path = Path(getenv("FAVICON"))
@@ -25,6 +25,7 @@ class SiteGenerator:
         self.photos = self.gather_photos(self.image_path)
         self.photo_sections = photos_per_keyword(self.photos)
         self.site_title = settings.TITLE
+        self.description = settings.DESCRIPTION
         self.text_paths = self.text_paths()
         self.text_page_names = [
             path.stem for path in self.text_paths if path.stem != "index"
@@ -63,6 +64,7 @@ class SiteGenerator:
                 photo_pages=self.photo_sections.keys(),
                 page=page,
                 site_title=self.site_title,
+                description=self.description,
             )
             file.write(html)
 
@@ -128,6 +130,16 @@ class SiteGenerator:
     def gather_photos(self, path: Path) -> list[Photo]:
         return [Photo(image) for image in path.iterdir()]
 
-
 if __name__ == "__main__":
-    SiteGenerator()
+    load_dotenv()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--generate-thumbnails", action="store_true")
+    parser.add_argument("--force", action="store_true")
+    # TODO: Add future verbose functionality to prints.
+    parser.add_argument("-v", "--verbose", action="store_true")
+
+    args = parser.parse_args()
+    if args.generate_thumbnails:
+        optimize_images([image for image in Path(getenv("PICTURES_FOLDER")).iterdir()], force=args.force)
+    else:
+        SiteGenerator()
