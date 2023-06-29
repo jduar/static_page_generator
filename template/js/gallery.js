@@ -1,5 +1,5 @@
 var preferMaxHeight = 450;
-const padding = 7;
+const padding = 10;
 
 window.addEventListener("load", buildGallery);
 if (desktop(window.innerWidth) === true) {
@@ -36,7 +36,7 @@ function buildGallery() {
           rowWidth + proposedWidth + 2 * padding > maxWidth &&
           positionInRow > 0
         ) {
-          var imagesToAdjust = [];
+          let imagesToAdjust = [];
           for (let position = 0; position <= positionInRow; position++) {
             imagesToAdjust.push(images[index - (positionInRow - position)]);
           }
@@ -46,6 +46,13 @@ function buildGallery() {
         }
       }
     });
+
+    // Adjust pictures on the remaining row
+    let imagesToAdjust = [];
+    for (let position = 0; position <= positionInRow; position++) {
+      imagesToAdjust.push(images[images.length - (positionInRow - position) - 1]);
+    }
+    adjustImagesToFit(imagesToAdjust, maxWidth);
   }
 }
 
