@@ -49,7 +49,9 @@ class SiteGenerator:
         shutil.copytree("template/css", dest_dir / "css")
         shutil.copytree("template/js", dest_dir / "js")
         shutil.copy(self.icon_path, dest_dir / "favicon.svg")
-        for path in Path(".src/public").iterdir():  # Deleting the dir itself causes issues with docker
+        for path in Path(
+            ".src/public"
+        ).iterdir():  # Deleting the dir itself causes issues with docker
             shutil.copy(path, Path(DESTINATION_DIR))
 
     def render_page(self, title: str, content: str) -> None:
@@ -130,16 +132,29 @@ class SiteGenerator:
     def gather_photos(self, path: Path) -> list[Photo]:
         return [Photo(image) for image in path.iterdir()]
 
+
 if __name__ == "__main__":
     load_dotenv()
     parser = argparse.ArgumentParser()
-    parser.add_argument("--generate-thumbnails", action="store_true")
-    parser.add_argument("--force", action="store_true")
+    thumbnails = parser.add_argument_group("thumbnail generation")
+    thumbnails.add_argument(
+        "--generate-thumbnails",
+        action="store_true",
+        help="generate smaller image thumbnails for gallery",
+    )
+    thumbnails.add_argument(
+        "--force",
+        action="store_true",
+        help="force regeneration of already existing thumbnails",
+    )
     # TODO: Add future verbose functionality to prints.
-    parser.add_argument("-v", "--verbose", action="store_true")
+    parser.add_argument("-v", "--verbose", action="store_true", help="currently does nothing")
 
     args = parser.parse_args()
     if args.generate_thumbnails:
-        optimize_images([image for image in Path(getenv("PICTURES_FOLDER")).iterdir()], force=args.force)
+        optimize_images(
+            [image for image in Path(getenv("PICTURES_FOLDER")).iterdir()],
+            force=args.force,
+        )
     else:
         SiteGenerator()

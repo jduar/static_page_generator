@@ -49,8 +49,8 @@ function buildGallery() {
 
     // Adjust pictures on the remaining row
     let imagesToAdjust = [];
-    for (let position = 0; position <= positionInRow; position++) {
-      imagesToAdjust.push(images[images.length - (positionInRow - position) - 1]);
+    for (let position = 0; position < positionInRow; position++) {
+      imagesToAdjust.push(images[images.length - position - 1]);
     }
     adjustImagesToFit(imagesToAdjust, maxWidth);
   }
