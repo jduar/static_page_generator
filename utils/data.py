@@ -67,6 +67,7 @@ def get_image_thumbnail(local_path: Path) -> Path:
 
 def optimize_images(images: list[Path], force: bool = False) -> None:
     print(" * Generating thumbnails...")
+    Path(THUMBNAILS_DIRECTORY).mkdir(exist_ok=True, parents=True)
     for image_path in images:
         if Path.is_file(get_image_thumbnail(image_path)) and not force:
             return
