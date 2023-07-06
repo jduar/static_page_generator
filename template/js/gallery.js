@@ -22,7 +22,7 @@ function buildGallery() {
 
       // If we're on mobile, let the CSS do its thing.
       if (desktop(window.innerWidth) === true) {
-        const proposedWidth = calculateWidth(image);
+        const proposedWidth = calculateImgWidth(image);
 
         if (rowWidth + proposedWidth + 2 * padding <= maxWidth) {
           rowWidth += proposedWidth + 2 * padding;
@@ -31,7 +31,7 @@ function buildGallery() {
           rowWidth + proposedWidth + 2 * padding > maxWidth &&
           positionInRow === 0
         ) {
-          element.style.height = calculateHeight(image, maxWidth);
+          element.style.height = calculateImgHeight(image, maxWidth);
         } else if (
           rowWidth + proposedWidth + 2 * padding > maxWidth &&
           positionInRow > 0
@@ -48,11 +48,14 @@ function buildGallery() {
     });
 
     // Adjust pictures on the remaining row
-    let imagesToAdjust = [];
-    for (let position = 0; position <= positionInRow; position++) {
-      imagesToAdjust.push(images[images.length - (positionInRow - position) - 1]);
+    for (let position = 0; position < positionInRow; position++) {
+      let divIndex = images.length - position - 1;
+      setDivSize(
+        images[divIndex],
+        preferMaxHeight,
+        calculateImgWidth(getImageWithin(images[divIndex]))
+      );
     }
-    adjustImagesToFit(imagesToAdjust, maxWidth);
   }
 }
 
@@ -60,17 +63,18 @@ function getImageWithin(div) {
   return div.querySelector(".gallery-image");
 }
 
-function calculateWidth(image, height = preferMaxHeight) {
+function calculateImgWidth(image, height = preferMaxHeight) {
   var ratio = height / image.getAttribute("height");
   return image.getAttribute("width") * ratio;
 }
 
-function calculateHeight(image, width) {
+function calculateImgHeight(image, width) {
   var ratio = width / image.getAttribute("width");
   return image.getAttribute("height") * ratio;
 }
 
-function setSize(div, height, width) {
+function setDivSize(div, height, width) {
+  console.log("div", div);
   div.style.height = height + "px";
   div.style.width = width + "px";
 }
@@ -81,12 +85,11 @@ function adjustImagesToFit(divs, maxWidth) {
     var image = getImageWithin(divs[i]);
     ratios.push(image.getAttribute("width") / image.getAttribute("height"));
   }
-  const realRatio =
-    maxWidth / ratios.reduce((partialSum, a) => partialSum + a, 0);
+  const realRatio = maxWidth / ratios.reduce((partialSum, a) => partialSum + a, 0);
   for (let i = 0; i < divs.length; i++) {
-    setSize(
+    setDivSize(
       divs[i],
-      calculateHeight(getImageWithin(divs[i]), realRatio * ratios[i]),
+      calculateImgHeight(getImageWithin(divs[i]), realRatio * ratios[i]),
       realRatio * ratios[i] - 2 * padding
     );
   }
