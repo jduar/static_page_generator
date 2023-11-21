@@ -1,4 +1,4 @@
-var preferMaxHeight = 450;
+let preferMaxHeight = 450;
 const padding = 10;
 
 window.addEventListener("load", buildGallery);
