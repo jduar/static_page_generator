@@ -38,6 +38,7 @@ class SiteGenerator:
 
     def cleanup(self) -> None:
         public = Path(DESTINATION_DIR)
+        public.mkdir(parents=True, exist_ok=True)
         for path in public.iterdir():
             if path.is_dir():
                 shutil.rmtree(path)
