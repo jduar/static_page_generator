@@ -2,7 +2,7 @@ let preferMaxHeight = 450;
 const padding = 10;
 
 window.addEventListener("load", buildGallery);
-if (desktop(window.innerWidth) === true) {
+if (isDesktop(window.innerWidth) === true) {
   window.addEventListener("resize", buildGallery);
 }
 
@@ -21,7 +21,7 @@ function buildGallery() {
       image.classList.remove("jsonly");
 
       // If we're on mobile, let the CSS do its thing.
-      if (desktop(window.innerWidth) === true) {
+      if (isDesktop(window.innerWidth) === true) {
         const proposedWidth = calculateImgWidth(image);
 
         if (rowWidth + proposedWidth + 2 * padding <= maxWidth) {
@@ -107,6 +107,6 @@ function setPreferredMaxHeight() {
   }
 }
 
-function desktop(width) {
+function isDesktop(width) {
   return width >= 865 ? true : false;
 }

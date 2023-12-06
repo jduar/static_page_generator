@@ -3,20 +3,20 @@
 {% block body %}
   <div class="horizontal">
     <div class="pages title">
-      <a href="/">{{ site_title }}</a>
+      <a href="./">{{ site_title }}</a>
     </div>
   </div>
   <div class="horizontal">
     <div class="pages">
       <ul>
-        {% for page in text_pages %}
+        {% for text_page in text_pages %}
           <li{% if loop.first %} class="top-space"{% endif %}>
-            <a href="{{ page }}">{{ page }}</a>
+            <a href="{{ text_page }}">{{ text_page }}</a>
           </li>
         {% endfor %}
-        {% for page in photo_pages %}
+        {% for photo_page in photo_pages %}
           <li{% if loop.first %} class="top-space"{% endif %}>
-            <a href="{{ page }}">{{ page }}</a>
+            <a href="{{ photo_page }}">{{ photo_page }}</a>
           </li>
         {% endfor %}
       </ul>
