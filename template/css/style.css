@@ -4,21 +4,24 @@ body {
   font-family: "Courier New", monospace, Helvetica, verdana, sans-serif;
 }
 
+.container {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
 .pages {
   flex-direction: row;
-  padding-right: 25px;
-  padding-left: 25px;
 }
 
 .pages a {
-  padding-left: 5px;
-  padding-right: 5px;
+  padding-right: 10px;
   text-decoration: none;
 }
 
 .pages ul {
   padding-left: 0;
-  margin-top: 0;
+  margin-top: 20px;
+  margin-bottom: 0;
   list-style: none;
 }
 
@@ -39,25 +42,23 @@ body {
   padding-top: 10px;
   padding-bottom: 10px;
   width: 100%;
+  color: rgb(95, 95, 95);
 }
 
-.gallery {
-  padding-right: 10px;
-  padding-left: 10px;
-}
-
-.gallery ul {
+.image-gallery {
   padding-left: 0;
   margin-top: 0;
 }
 
-.gallery li {
+.image-gallery>li {
   list-style-type: none;
-  padding: 5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 
 .title {
-  padding: 20px 25px 15px 25px;
+  padding-top: 20px;
+  padding-bottom: 15px;
   font-size: 1.5em;
 }
 
@@ -78,11 +79,6 @@ a {
 a:hover,
 a:focus {
   color: rgb(138, 178, 218);
-}
-
-.photo-page {
-  padding-right: 15px;
-  padding-left: 15px;
 }
 
 .small-font {
@@ -114,8 +110,6 @@ a:focus {
     display: flex;
     flex-direction: column;
     width: 20%;
-    padding-right: 0;
-    padding-left: 0;
   }
 
   .pages ul {
@@ -127,13 +121,7 @@ a:focus {
   }
 
   .content {
-    color: rgb(95, 95, 95);
     width: 78%;
-  }
-
-  .gallery {
-    padding-right: 0px;
-    padding-left: 0px;
   }
 
   .image-gallery {
@@ -146,6 +134,7 @@ a:focus {
     height: 195px;
     flex: auto;
     position: relative;
+    padding: 5px;
   }
 
   .image-gallery li a {
@@ -173,10 +162,6 @@ a:focus {
 
   .horizontal {
     flex-direction: row;
-  }
-
-  .top-space {
-    margin-top: 20px;
   }
 
   .photo-page {

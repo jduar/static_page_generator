@@ -8,18 +8,25 @@
   </div>
   <div class="horizontal">
     <div class="pages">
-      <ul>
-        {% for text_page in text_pages %}
-          <li{% if loop.first %} class="top-space"{% endif %}>
-            <a href="{{ text_page }}">{{ text_page }}</a>
-          </li>
-        {% endfor %}
-        {% for photo_page in photo_pages %}
-          <li{% if loop.first %} class="top-space"{% endif %}>
-            <a href="{{ photo_page }}">{{ photo_page }}</a>
-          </li>
-        {% endfor %}
-      </ul>
+      {% if text_pages %}
+        <ul>
+          {% for text_page in text_pages %}
+            <li>
+              <a href="{{ text_page }}">{{ text_page }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+        <br/>
+      {% endif %}
+      {% if photo_pages %}
+        <ul>
+          {% for photo_page in photo_pages %}
+            <li>
+              <a href="{{ photo_page }}">{{ photo_page }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
     </div>
     <div class="content">{{ page.content }}</div>
   </div>
