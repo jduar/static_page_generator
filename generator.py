@@ -18,9 +18,12 @@ DESTINATION_DIR = "public"
 
 class SiteGenerator:
     def __init__(self):
-        self.image_path = Path(getenv("PICTURES_FOLDER"))
-        self.pages_path = Path(getenv("PAGES_FOLDER"))
-        self.icon_path = Path(getenv("FAVICON"))
+        # self.image_path = Path(getenv("PICTURES_FOLDER"))
+        # self.pages_path = Path(getenv("PAGES_FOLDER"))
+        # self.icon_path = Path(getenv("FAVICON"))
+        self.image_path = Path("data/images")
+        self.pages_path = Path("data/pages")
+        self.icon_path = Path("data/favicon.svg")
         self.env = Environment(loader=FileSystemLoader("template"))
         self.photos = self.gather_photos(self.image_path)
         self.photo_sections = photos_per_keyword(self.photos)
@@ -141,7 +144,7 @@ if __name__ == "__main__":
     thumbnails.add_argument(
         "--generate-thumbnails",
         action="store_true",
-        help="generate smaller image thumbnails for gallery",
+        help="generate smaller image thumbnails for gallery - might take a while depending on the number of images",
     )
     thumbnails.add_argument(
         "--force",

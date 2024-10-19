@@ -8,5 +8,6 @@ services:
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
       - ./public:/usr/share/nginx/html
-      - ./thumbnails:/usr/share/nginx/data/thumbnails
-      - ${PICTURES_FOLDER}:/usr/share/nginx/data/images
+      - ./data:/usr/share/nginx/data
+      # - ./data/thumbnails:/usr/share/nginx/data/thumbnails
+      # - ${PICTURES_FOLDER}:/usr/share/nginx/data/images
