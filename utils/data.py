@@ -2,6 +2,7 @@ import logging
 from collections import OrderedDict, defaultdict
 from datetime import datetime
 from pathlib import Path
+from typing import Set
 
 from exif import Image
 from iptcinfo3 import IPTCInfo
@@ -15,6 +16,12 @@ iptcinfo_logger = logging.getLogger("iptcinfo")
 iptcinfo_logger.setLevel(logging.ERROR)
 
 THUMBNAILS_DIRECTORY = "thumbnails"
+
+
+class Tag:
+    def __init__(self, name):
+        self.name = name
+        self.photos: Set[Photo] = set()
 
 
 class Photo:

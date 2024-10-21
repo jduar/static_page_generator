@@ -18,9 +18,9 @@ By this point, this is less of a generic static page generator and more of stati
 
 The generator currently has two generating behaviours: text pages and image galleries.
 
-Text pages are HTML pages converted from Markdown documents. These should be stored inside a directory which you can point to by changing the `PAGES_FOLDER` variable in the `.env` file.
+Text pages are HTML pages converted from Markdown documents. These should be stored inside the `data/pages` directory.
 
-Photo galleries are generated from photos containing keyword data. Each keyword will generate a section with the pictures which have that keyword placed within. The website's main page will display all photos. Point to your photos by changing the `PICTURES_FOLDER` directory in the `.env` file.
+Photo galleries are generated from photos containing keyword data. Each keyword will generate a section with the pictures that contain that keyword. The website's main page will display all photos. Your photos should be stored inside the `data/images` directory.
 
 Running the docker container then sets up an nginx server with the pages you've just generated.
 

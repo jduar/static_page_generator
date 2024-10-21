@@ -14,18 +14,15 @@ from utils.data import Photo, optimize_images, photos_per_keyword
 from utils.sorters import OrderMethod, sort_photos
 
 DESTINATION_DIR = "public"
+IMAGES_PATH = Path("data/images")
+PAGES_PATH = Path("data/pages")
+FAVICON_PATH = Path("data/favicon.svg")
 
 
 class SiteGenerator:
     def __init__(self):
-        # self.image_path = Path(getenv("PICTURES_FOLDER"))
-        # self.pages_path = Path(getenv("PAGES_FOLDER"))
-        # self.icon_path = Path(getenv("FAVICON"))
-        self.image_path = Path("data/images")
-        self.pages_path = Path("data/pages")
-        self.icon_path = Path("data/favicon.svg")
         self.env = Environment(loader=FileSystemLoader("template"))
-        self.photos = self.gather_photos(self.image_path)
+        self.photos = self.gather_photos(IMAGES_PATH)
         self.photo_sections = photos_per_keyword(self.photos)
         self.site_title = settings.TITLE
         self.description = settings.DESCRIPTION
@@ -52,7 +49,7 @@ class SiteGenerator:
         dest_dir = Path(DESTINATION_DIR)
         shutil.copytree("template/css", dest_dir / "css")
         shutil.copytree("template/js", dest_dir / "js")
-        shutil.copy(self.icon_path, dest_dir / "favicon.svg")
+        shutil.copy(FAVICON_PATH, dest_dir / "favicon.svg")
         for path in Path(
             ".src/public"
         ).iterdir():  # Deleting the dir itself causes issues with docker
@@ -131,7 +128,7 @@ class SiteGenerator:
 
     def text_paths(self) -> list[Path]:
         """Returns list of text page paths."""
-        return list(self.pages_path.iterdir())
+        return list(PAGES_PATH.iterdir())
 
     def gather_photos(self, path: Path) -> list[Photo]:
         return [Photo(image) for image in path.iterdir()]
