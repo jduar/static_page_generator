@@ -1,6 +1,6 @@
 from PIL import Image, ImageStat
 
-from .data import Photo
+from utils.data import Photo
 
 
 class OrderMethod:
@@ -10,7 +10,7 @@ class OrderMethod:
 
 def sort_photos(
     photos: list[Photo], order_method: str, reverse_order: bool = True
-) -> list[Photo]:
+) -> list[Photo] | None:
     sorting_map = {
         "date": date_sort,
         "color": color_sort,

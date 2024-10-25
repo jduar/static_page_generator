@@ -9,16 +9,16 @@
       <p>{{ photo.get_original_date() }}</p>
       <p>
         {% if photo.aperture %}
-          {{ photo.get_aperture() }}
+          {{ photo.render_aperture }}
         {% endif %}
         {% if photo.aperture and photo.focal_length %}
           ,
         {% endif %}
         {% if photo.focal_length %}
-          {{ photo.get_focal_length() }}
+          {{ photo.render_focal_length }}
         {% endif %}
       </p>
-      <p class="small-font tag">{{ photo.get_keywords() }}</p>
+      <p class="small-font tag">{{ photo.render_keywords }}</p>
     </div>
   </div>
 {% endblock %}

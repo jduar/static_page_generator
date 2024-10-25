@@ -4,32 +4,35 @@ import argparse
 import shutil
 from os import getenv
 from pathlib import Path
+from typing import Set
 
 import markdown
 from dotenv import load_dotenv
 from jinja2 import Environment, FileSystemLoader
 
 import settings
-from utils.data import Photo, optimize_images, photos_per_keyword
+from utils.data import Photo, TagOrganizer, optimize_images
 from utils.sorters import OrderMethod, sort_photos
 
 DESTINATION_DIR = "public"
+IMAGES_PATH = Path("data/images")
+PAGES_PATH = Path("data/pages")
+FAVICON_PATH = Path("data/favicon.svg")
 
 
 class SiteGenerator:
     def __init__(self):
-        self.image_path = Path(getenv("PICTURES_FOLDER"))
-        self.pages_path = Path(getenv("PAGES_FOLDER"))
-        self.icon_path = Path(getenv("FAVICON"))
+        self.photos: Set[Photo] = set()
+        self.tag_organizer = TagOrganizer()
+
+        self.gather_photos()
+
         self.env = Environment(loader=FileSystemLoader("template"))
-        self.photos = self.gather_photos(self.image_path)
-        self.photo_sections = photos_per_keyword(self.photos)
+
         self.site_title = settings.TITLE
         self.description = settings.DESCRIPTION
         self.text_paths = self.text_paths()
-        self.text_page_names = [
-            path.stem for path in self.text_paths if path.stem != "index"
-        ]
+        self.text_page_names = [path.stem for path in self.text_paths if path.stem != "index"]
 
         self.render_content()
         self.cleanup()
@@ -49,10 +52,8 @@ class SiteGenerator:
         dest_dir = Path(DESTINATION_DIR)
         shutil.copytree("template/css", dest_dir / "css")
         shutil.copytree("template/js", dest_dir / "js")
-        shutil.copy(self.icon_path, dest_dir / "favicon.svg")
-        for path in Path(
-            ".src/public"
-        ).iterdir():  # Deleting the dir itself causes issues with docker
+        shutil.copy(FAVICON_PATH, dest_dir / "favicon.svg")
+        for path in Path(".src/public").iterdir():  # Deleting the dir itself causes issues with docker
             shutil.copy(path, Path(DESTINATION_DIR))
 
     def render_page(self, title: str, content: str) -> None:
@@ -64,7 +65,7 @@ class SiteGenerator:
         with open(Path(".src") / link, "w+") as file:
             html = template.render(
                 text_pages=self.text_page_names,
-                photo_pages=self.photo_sections.keys(),
+                photo_pages=self.tag_organizer.get_render_tags(),
                 page=page,
                 site_title=self.site_title,
                 description=self.description,
@@ -118,20 +119,20 @@ class SiteGenerator:
                 html_content = markdown.markdown(content, output_format="html5")
                 self.render_page(path.stem, html_content)
 
-        for section in self.photo_sections:
+        for tag in self.tag_organizer.tags:
             self.render_page(
-                section,
-                self.render_gallery(
-                    self.photo_sections[section], sorting=OrderMethod.DATE
-                ),
+                title=tag,
+                content=self.render_gallery(self.tag_organizer.tags[tag].photos, sorting=OrderMethod.DATE),
             )
 
     def text_paths(self) -> list[Path]:
         """Returns list of text page paths."""
-        return list(self.pages_path.iterdir())
+        return list(PAGES_PATH.iterdir())
 
-    def gather_photos(self, path: Path) -> list[Photo]:
-        return [Photo(image) for image in path.iterdir()]
+    def gather_photos(self):
+        for image in IMAGES_PATH.iterdir():
+            photo = Photo(image, tag_organizer=self.tag_organizer)
+            self.photos.add(photo)
 
 
 if __name__ == "__main__":
@@ -141,7 +142,7 @@ if __name__ == "__main__":
     thumbnails.add_argument(
         "--generate-thumbnails",
         action="store_true",
-        help="generate smaller image thumbnails for gallery",
+        help="generate smaller image thumbnails for gallery - might take a while depending on the number of images",
     )
     thumbnails.add_argument(
         "--force",

@@ -1,6 +1,7 @@
 public/
-images/
-pages/
+data/images/
+data/pages/
+data/thumbnaisl/
 .src/
 
 # Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode,python
