@@ -65,7 +65,6 @@ class SiteGenerator:
         with open(Path(".src") / link, "w+") as file:
             html = template.render(
                 text_pages=self.text_page_names,
-                # photo_pages=self.photo_sections.keys(),
                 photo_pages=self.tag_organizer.get_render_tags(),
                 page=page,
                 site_title=self.site_title,
