@@ -1,6 +1,6 @@
 from PIL import Image, ImageStat
 
-from utils.data import Photo
+from data import Photo
 
 
 class OrderMethod:
