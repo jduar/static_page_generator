@@ -28,6 +28,10 @@
         </ul>
       {% endif %}
     </div>
-    <div class="content">{{ page.content }}</div>
+    <div class="content">
+      {% block content %}
+        {{ content | safe }}
+      {% endblock content %}
+    </div>
   </div>
 {% endblock %}

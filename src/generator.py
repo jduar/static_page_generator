@@ -1,9 +1,9 @@
 import shutil
 from pathlib import Path
-from typing import Set
+from typing import Iterable, Set
 
 import markdown
-from jinja2 import Environment, FileSystemLoader
+from jinja2 import Environment, FileSystemLoader, Template
 
 import settings
 from data import Photo, TagOrganizer
@@ -22,9 +22,8 @@ class SiteGenerator:
 
         self.gather_photos()
 
-        self.jinja_env = Environment(loader=FileSystemLoader("templates"))
+        self.jinja_env = Environment(loader=FileSystemLoader("templates"), autoescape=True)
 
-        # TODO: Rework from here down.
         self.text_paths = list(PAGES_PATH.iterdir())
         self.text_page_names = [path.stem for path in self.text_paths if path.stem != "index"]
 
@@ -50,23 +49,20 @@ class SiteGenerator:
         for path in Path(".src/public").iterdir():  # Deleting the dir itself causes issues with docker
             shutil.copy(path, Path(DESTINATION_DIR))
 
-    def render_page(self, title: str, content: str) -> None:
-        template = self.jinja_env.get_template("main_layout.html")
+    def render_page(self, title:str, template_name: str, context: dict) -> None:
+        template: Template = self.jinja_env.get_template(template_name)
 
-        link = f"{DESTINATION_DIR}/{title}.html"
-        page = {"title": title, "link": link, "content": content}
-
-        with open(Path(".src") / link, "w+") as file:
+        with open(Path(".src") / f"{DESTINATION_DIR}/{title}.html", "w+") as file:
             html = template.render(
                 text_pages=self.text_page_names,
                 photo_pages=self.tag_organizer.get_render_tags(),
-                page=page,
                 site_title=settings.TITLE,
                 description=settings.DESCRIPTION,
+                **context,
             )
             file.write(html)
 
-    def render_gallery(self, photos: list[Photo], sorting: str = None) -> None:
+    def render_gallery(self, title: str, photos: Iterable[Photo], sorting: str | None = None) -> None:
         if sorting:
             photos = sort_photos(photos, sorting)
         photo_context = []
@@ -82,8 +78,7 @@ class SiteGenerator:
                     "alt": photo.description,
                 }
             )
-        template = self.jinja_env.get_template("gallery.html")
-        return template.render(photos=photo_context)
+        self.render_page(title, "gallery.html", {"photos": photo_context})
 
     def render_photo_page(self, photo: Photo) -> None:
         template = self.jinja_env.get_template("photo.html")
@@ -100,10 +95,7 @@ class SiteGenerator:
             else:
                 path.unlink()
 
-        self.render_page(
-            title="index",
-            content=self.render_gallery(self.photos, sorting=OrderMethod.DATE),
-        )
+        self.render_gallery("index", self.photos, sorting=OrderMethod.DATE)
         for path in self.text_paths:
             if path.stem == "index":
                 continue
@@ -111,13 +103,11 @@ class SiteGenerator:
                 with open(path, "r") as file:
                     content = file.read()
                 html_content = markdown.markdown(content, output_format="html5")
-                self.render_page(path.stem, html_content)
+                # self.render_page(path.stem, html_content)
+                self.render_page(path.stem, "text_page.html", {"content": html_content})
 
         for tag in self.tag_organizer.tags:
-            self.render_page(
-                title=tag,
-                content=self.render_gallery(self.tag_organizer.tags[tag].photos, sorting=OrderMethod.DATE),
-            )
+            self.render_gallery(tag, self.tag_organizer.tags[tag].photos, sorting=OrderMethod.DATE)
 
     def gather_photos(self):
         for image in IMAGES_PATH.iterdir():
