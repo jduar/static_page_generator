@@ -1,6 +1,6 @@
 public/
-images/
-pages/
+data/*
+!data/**/.gitkeep
 .src/
 
 # Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode,python
