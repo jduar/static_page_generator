@@ -1,0 +1,9 @@
+{% extends "main_layout.html" %}
+
+{% block content %}
+  <p>
+    {% for tag in photo_tags %}
+      <a href="{{ photo_tags[tag].name }}">{{ photo_tags[tag].name }}</a>{% if not loop.last %} {% endif %}
+    {% endfor %}
+  </p>
+{% endblock content %}
