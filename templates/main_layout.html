@@ -2,30 +2,33 @@
 
 {% block body %}
   <div class="horizontal">
-    <div class="pages title">
+    <div class="sections title">
       <a href="./">{{ site_title }}</a>
     </div>
   </div>
   <div class="horizontal">
-    <div class="pages">
+    <div class="sections">
       {% if text_pages %}
-        <ul>
+        <ul class="top-margin">
           {% for text_page in text_pages %}
-            <li>
+            <li class="section-item">
               <a href="{{ text_page }}">{{ text_page }}</a>
             </li>
           {% endfor %}
         </ul>
         <br/>
       {% endif %}
-      {% if photo_pages %}
-        <ul>
-          {% for photo_page in photo_pages %}
-            <li>
-              <a href="{{ photo_page }}">{{ photo_page }}</a>
+      {% if photo_sections %}
+        <ul class="top-margin">
+          {% for tag in photo_sections %}
+            <li class="section-item">
+              <a href="{{ tag }}">{{ tag }}</a>
             </li>
           {% endfor %}
         </ul>
+      {% endif %}
+      {% if show_tags_page %}
+        <a class="top-margin section-item" href="tags">tags</a>
       {% endif %}
     </div>
     <div class="content">

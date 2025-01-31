@@ -9,28 +9,27 @@ body {
   padding-right: 15px;
 }
 
-.pages {
+.sections {
   flex-direction: row;
 }
 
-.pages a {
+.section-item {
+  float: left;
+  list-style-type: none;
+  padding: 5px;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.sections a {
   padding-right: 10px;
   text-decoration: none;
 }
 
-.pages ul {
+.sections ul {
   padding-left: 0;
-  margin-top: 20px;
   margin-bottom: 0;
   list-style: none;
-}
-
-.pages li {
-  float: left;
-  padding: 5px;
-  padding-left: 0px;
-  padding-right: 0px;
-  list-style-type: none;
 }
 
 .horizontal {
@@ -39,7 +38,7 @@ body {
 }
 
 .content {
-  padding-top: 10px;
+  padding-top: 25px;
   padding-bottom: 10px;
   width: 100%;
   color: rgb(95, 95, 95);
@@ -101,26 +100,28 @@ a:focus {
   display: none;
 }
 
+.top-margin {
+    margin-top: 20px;
+}
+
 @media only screen and (min-width: 865px) {
   body {
     padding: 10px 25px 10px 25px;
   }
 
-  .pages {
+  .sections {
     display: flex;
     flex-direction: column;
     width: 20%;
-  }
-
-  .pages ul {
     padding-left: 30px;
   }
 
-  .pages li {
+  .sections li {
     float: none;
   }
 
   .content {
+    padding-top: 10px;
     width: 78%;
   }
 

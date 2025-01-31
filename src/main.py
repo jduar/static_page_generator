@@ -16,19 +16,12 @@ if __name__ == "__main__":
         action="store_true",
         help="generate smaller image thumbnails for gallery - might take a while depending on the number of images",
     )
-    thumbnails.add_argument(
-        "--force",
-        action="store_true",
-        help="force regeneration of already existing thumbnails",
-    )
+    thumbnails.add_argument("--force", action="store_true", help="force regeneration of already existing thumbnails")
     # TODO: Add future verbose functionality to prints.
     parser.add_argument("-v", "--verbose", action="store_true", help="currently does nothing")
 
     args = parser.parse_args()
     if args.generate_thumbnails:
-        optimize_images(
-            [image for image in IMAGES_PATH.iterdir()],
-            force=args.force,
-        )
+        optimize_images([image for image in IMAGES_PATH.iterdir()], force=args.force)
     else:
         SiteGenerator()

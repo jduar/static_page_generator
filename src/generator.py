@@ -49,15 +49,18 @@ class SiteGenerator:
         for path in Path(".src/public").iterdir():  # Deleting the dir itself causes issues with docker
             shutil.copy(path, Path(DESTINATION_DIR))
 
-    def render_page(self, title:str, template_name: str, context: dict) -> None:
+    def render_page(self, title: str, template_name: str, context: dict = {}) -> None:
         template: Template = self.jinja_env.get_template(template_name)
 
         with open(Path(".src") / f"{DESTINATION_DIR}/{title}.html", "w+") as file:
             html = template.render(
                 text_pages=self.text_page_names,
-                photo_pages=self.tag_organizer.get_render_tags(),
+                photo_sections=self.tag_organizer.get_render_tags(),
+                # TODO: Order tags alphabetically
+                photo_tags=self.tag_organizer.tags,
                 site_title=settings.TITLE,
                 description=settings.DESCRIPTION,
+                show_tags_page=self.show_tags_page,
                 **context,
             )
             file.write(html)
@@ -102,14 +105,20 @@ class SiteGenerator:
             else:
                 with open(path, "r") as file:
                     content = file.read()
-                html_content = markdown.markdown(content, output_format="html5")
-                # self.render_page(path.stem, html_content)
-                self.render_page(path.stem, "text_page.html", {"content": html_content})
+                html_content = markdown.markdown(content, output_format="html")
+                self.render_page(path.stem, "main_layout.html", {"content": html_content})
 
         for tag in self.tag_organizer.tags:
             self.render_gallery(tag, self.tag_organizer.tags[tag].photos, sorting=OrderMethod.DATE)
+
+        if self.show_tags_page:
+            self.render_page("tags", "tags_page.html")
 
     def gather_photos(self):
         for image in IMAGES_PATH.iterdir():
             photo = Photo(image, tag_organizer=self.tag_organizer)
             self.photos.add(photo)
+
+    @property
+    def show_tags_page(self) -> bool:
+        return bool(settings.TAGS_WHITELIST or settings.TAGS_BLACKLIST)
