@@ -14,7 +14,7 @@ import settings
 iptcinfo_logger = logging.getLogger("iptcinfo")
 iptcinfo_logger.setLevel(logging.ERROR)
 
-THUMBNAILS_DIRECTORY = "thumbnails"
+THUMBNAILS_PATH = Path("data/thumbnails")
 
 
 class Photo:
@@ -93,16 +93,15 @@ class Tag:
 
 def get_image_thumbnail(local_path: Path) -> Path:
     """Returns Path for the image thumbnails, whether it exists or not."""
-    return Path(THUMBNAILS_DIRECTORY) / f"{local_path.stem}_thumbnail{local_path.suffix}"
+    return THUMBNAILS_PATH / f"{local_path.stem}_thumbnail{local_path.suffix}"
 
 
 def optimize_images(images: list[Path], force: bool = False) -> None:
     print(" * Generating thumbnails...")
-    Path(THUMBNAILS_DIRECTORY).mkdir(exist_ok=True, parents=True)
+    THUMBNAILS_PATH.mkdir(exist_ok=True, parents=True)
     for image_path in images:
-        if Path.is_file(get_image_thumbnail(image_path)) and not force:
-            return
-        optimize_image(image_path)
+        if not Path.is_file(get_image_thumbnail(image_path)) or force:
+            optimize_image(image_path)
 
 
 def optimize_image(image_path: Path) -> None:
