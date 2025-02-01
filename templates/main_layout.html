@@ -9,17 +9,16 @@
   <div class="horizontal">
     <div class="sections">
       {% if text_pages %}
-        <ul class="top-margin">
+        <ul class="sections-list top-margin">
           {% for text_page in text_pages %}
             <li class="section-item">
               <a href="{{ text_page }}">{{ text_page }}</a>
             </li>
           {% endfor %}
         </ul>
-        <br/>
       {% endif %}
       {% if photo_sections %}
-        <ul class="top-margin">
+        <ul class="hide-mobile sections-list top-margin">
           {% for tag in photo_sections %}
             <li class="section-item">
               <a href="{{ tag }}">{{ tag }}</a>
@@ -28,7 +27,9 @@
         </ul>
       {% endif %}
       {% if show_tags_page %}
-        <a class="top-margin section-item" href="tags">tags</a>
+        <div>
+          <a class="top-margin section-item" href="tags">tags</a>
+        </div>
       {% endif %}
     </div>
     <div class="content">

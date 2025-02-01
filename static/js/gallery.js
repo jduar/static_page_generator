@@ -74,7 +74,6 @@ function calculateImgHeight(image, width) {
 }
 
 function setDivSize(div, height, width) {
-  console.log("div", div);
   div.style.height = height + "px";
   div.style.width = width + "px";
 }

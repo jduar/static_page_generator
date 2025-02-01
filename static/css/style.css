@@ -1,7 +1,8 @@
 body {
   padding: 10px 0;
   background-color: #f5f5f5;
-  font-family: "Courier New", monospace, Helvetica, verdana, sans-serif;
+  font-family: -apple-system,BlinkMacSystemFont,"Courier New",Helvetica,verdana,sans-serif;
+  font-weight: 300;
 }
 
 .container {
@@ -13,8 +14,12 @@ body {
   flex-direction: row;
 }
 
+.sections-list {
+  display: flex;
+  flex-wrap: wrap;
+}
+
 .section-item {
-  float: left;
   list-style-type: none;
   padding: 5px;
   padding-left: 0;
@@ -30,6 +35,10 @@ body {
   padding-left: 0;
   margin-bottom: 0;
   list-style: none;
+}
+
+.hide-mobile {
+  display: none;
 }
 
 .horizontal {
@@ -49,7 +58,7 @@ body {
   margin-top: 0;
 }
 
-.image-gallery>li {
+.image-gallery > li {
   list-style-type: none;
   padding-top: 5px;
   padding-bottom: 5px;
@@ -100,9 +109,6 @@ a:focus {
   display: none;
 }
 
-.top-margin {
-    margin-top: 20px;
-}
 
 @media only screen and (min-width: 865px) {
   body {
@@ -116,8 +122,20 @@ a:focus {
     padding-left: 30px;
   }
 
+  .sections-group {
+    margin-top: 20px;
+  }
+
   .sections li {
     float: none;
+  }
+
+  .section-list {
+    display: block;
+  }
+
+  .hide-mobile {
+    display: unset;
   }
 
   .content {
@@ -131,7 +149,7 @@ a:focus {
     gap: 0;
   }
 
-  .image-gallery>li {
+  .image-gallery > li {
     height: 195px;
     flex: auto;
     position: relative;
@@ -171,19 +189,19 @@ a:focus {
 }
 
 @media only screen and (min-width: 1084px) {
-  .image-gallery>li {
+  .image-gallery > li {
     height: 290px;
   }
 }
 
 @media only screen and (min-width: 1920px) {
-  .image-gallery>li {
+  .image-gallery > li {
     height: 350px;
   }
 }
 
 @media only screen and (min-width: 2560px) {
-  .image-gallery>li {
+  .image-gallery > li {
     height: 450px;
   }
 }
