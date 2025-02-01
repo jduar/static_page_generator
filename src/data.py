@@ -29,7 +29,9 @@ class Photo:
         self.get_tags(tag_organizer)
         self.get_image_size()
         self.thumbnail = (
-            get_image_thumbnail(self.local_path) if Path.is_file(get_image_thumbnail(self.local_path)) else None
+            Path("thumbnails") / get_thumbnail_name(path)
+            if Path.is_file(get_image_thumbnail(self.local_path))
+            else None
         )
 
     def get_exif_data(self) -> None:
@@ -93,7 +95,11 @@ class Tag:
 
 def get_image_thumbnail(local_path: Path) -> Path:
     """Returns Path for the image thumbnails, whether it exists or not."""
-    return THUMBNAILS_PATH / f"{local_path.stem}_thumbnail{local_path.suffix}"
+    return THUMBNAILS_PATH / get_thumbnail_name(local_path)
+
+
+def get_thumbnail_name(image_path: Path) -> str:
+    return f"{image_path.stem}_thumbnail{image_path.suffix}"
 
 
 def optimize_images(images: list[Path], force: bool = False) -> None:
