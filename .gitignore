@@ -1,7 +1,13 @@
 public/
-data/*
-!data/**/.gitkeep
 .src/
+
+data/**
+!data/
+!data/images/
+!data/pages/
+!data/.gitkeep
+!data/images/.gitkeep
+!data/pages/.gitkeep
 
 # Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode,python
 # Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode,python
