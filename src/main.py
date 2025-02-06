@@ -5,7 +5,7 @@ import argparse
 from dotenv import load_dotenv
 
 from data import optimize_images
-from generator import IMAGES_PATH, SiteGenerator
+from generator import IMAGE_EXTENSIONS, IMAGES_PATH, SiteGenerator
 
 if __name__ == "__main__":
     load_dotenv()
@@ -22,6 +22,8 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     if args.generate_thumbnails:
-        optimize_images([image for image in IMAGES_PATH.iterdir()], force=args.force)
+        optimize_images(
+            [image for image in IMAGES_PATH.iterdir() if image.suffix.lower() in IMAGE_EXTENSIONS], force=args.force
+        )
     else:
         SiteGenerator()

@@ -14,6 +14,8 @@ IMAGES_PATH = Path("data/images")
 PAGES_PATH = Path("data/pages")
 FAVICON_PATH = Path("data/favicon.svg")
 
+IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tiff"}
+
 
 class SiteGenerator:
     def __init__(self):
@@ -24,7 +26,7 @@ class SiteGenerator:
 
         self.jinja_env = Environment(loader=FileSystemLoader("templates"), autoescape=True)
 
-        self.text_paths = list(PAGES_PATH.iterdir())
+        self.text_paths = [page for page in PAGES_PATH.iterdir() if page.suffix.lower() == ".md"]
         self.text_page_names = [path.stem for path in self.text_paths if path.stem != "index"]
 
         self.render_content()
@@ -116,8 +118,9 @@ class SiteGenerator:
 
     def gather_photos(self):
         for image in IMAGES_PATH.iterdir():
-            photo = Photo(image, tag_organizer=self.tag_organizer)
-            self.photos.add(photo)
+            if image.suffix.lower() in IMAGE_EXTENSIONS:
+                photo = Photo(image, tag_organizer=self.tag_organizer)
+                self.photos.add(photo)
 
     @property
     def show_tags_page(self) -> bool:
