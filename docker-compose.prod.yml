@@ -1,0 +1,4 @@
+services:
+  generator:
+    build:
+      target: runtime

@@ -1,0 +1,17 @@
+.git
+.github
+
+public/
+.src/
+data/
+
+venv/
+.venv/
+__pycache__/
+**/__pycache__/
+*.pyc
+.mypy_cache/
+.ruff_cache/
+
+example_content/
+images/
