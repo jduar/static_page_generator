@@ -3,6 +3,7 @@ services:
     build:
       context: .
       target: dev
+    image: page-generator-dev
     container_name: page-generator
     volumes:
       - ./data:/app/data

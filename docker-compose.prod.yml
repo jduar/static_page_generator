@@ -2,3 +2,4 @@ services:
   generator:
     build:
       target: runtime
+    image: page-generator

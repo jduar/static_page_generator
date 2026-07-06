@@ -1,4 +1,4 @@
-CONTAINER := page-generator
+SERVICE := generator
 
 .PHONY: dev first-run run generate thumbnails lint
 
@@ -14,14 +14,14 @@ first-run: public
 run: public
 	docker compose -f docker-compose.yml -f docker-compose.prod.yml up --build -d
 
-generate:
-	docker exec $(CONTAINER) python src/main.py
+generate: public
+	docker compose run --rm $(SERVICE) python src/main.py
 
 thumbnails:
-	docker exec $(CONTAINER) python src/main.py --generate-thumbnails $(if $(FORCE),--force,)
+	docker compose run --rm $(SERVICE) python src/main.py --generate-thumbnails $(if $(FORCE),--force,)
 
 lint:
-	docker exec $(CONTAINER) ruff check src
+	docker compose run --rm $(SERVICE) ruff check src
 
 public:
 	mkdir -p public
