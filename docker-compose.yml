@@ -1,11 +1,26 @@
-version: '3'
-
 services:
-  nginx:
-    image: nginx:latest
-    container_name: webserver
-    restart: unless-stopped
+  generator:
+    build:
+      context: .
+      target: dev
+    image: page-generator-dev
+    container_name: page-generator
     volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf
-      - ./public:/usr/share/nginx/html
-      - ./data:/usr/share/nginx/data
+      - ./data:/app/data
+      - ./templates:/app/templates
+      - ./static:/app/static
+      - ./src:/app/src
+      - ./public:/app/public
+
+  nginx:
+    image: nginx:stable-alpine
+    container_name: page-generator-nginx
+    restart: unless-stopped
+    depends_on:
+      - generator
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./public:/usr/share/nginx/html:ro
+      - ./data:/usr/share/nginx/data:ro
+    ports:
+      - "8080:80"
