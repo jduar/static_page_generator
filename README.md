@@ -12,7 +12,7 @@ Dump your favourite photos in `data/images/`. Add markdown files to `data/pages/
 If you're unsure how these translate into the website layout, you can find example content in `example_content/`. Copy it with
 
 ```bash
-$ cp example_content/* data/
+$ cp -r example_content/* data/
 ```
 
 Then run the server with
