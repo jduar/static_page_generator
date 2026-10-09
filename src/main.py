@@ -2,13 +2,10 @@
 
 import argparse
 
-from dotenv import load_dotenv
-
 from data import optimize_images
 from generator import IMAGE_EXTENSIONS, IMAGES_PATH, SiteGenerator
 
 if __name__ == "__main__":
-    load_dotenv()
     parser = argparse.ArgumentParser()
     thumbnails = parser.add_argument_group("thumbnail generation")
     thumbnails.add_argument(
