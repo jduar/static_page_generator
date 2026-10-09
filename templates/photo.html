@@ -18,7 +18,11 @@
           {{ photo.render_focal_length }}
         {% endif %}
       </p>
-      <p class="small-font tag">{{ photo.render_keywords }}</p>
+      <p class="photo-tags tag">
+        {% for tag in photo.tags | sort %}
+          <a href="{{ tag }}" class="undecorated">{{ tag }}</a>{% if not loop.last %},{% endif %}
+        {% endfor %}
+      </p>
     </div>
   </div>
 {% endblock %}

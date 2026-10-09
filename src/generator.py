@@ -116,8 +116,7 @@ class SiteGenerator:
         for tag in self.tag_organizer.tags:
             self.render_gallery(tag, self.tag_organizer.tags[tag].photos, sorting=OrderMethod.DATE)
 
-        if self.show_tags_page:
-            self.render_page("tags", "tags_page.html")
+        self.render_page("tags", "tags_page.html")
 
     def render_markdown_page(self, title: str, path: Path) -> None:
         html_content = markdown.markdown(path.read_text(), output_format="html")
