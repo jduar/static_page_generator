@@ -47,7 +47,8 @@ class SiteGenerator:
         dest_dir = Path(DESTINATION_DIR)
         shutil.copytree("static/css", dest_dir / "css")
         shutil.copytree("static/js", dest_dir / "js")
-        shutil.copy(FAVICON_PATH, dest_dir / "favicon.svg")
+        favicon = FAVICON_PATH if FAVICON_PATH.is_file() else Path("example_content/favicon.svg")
+        shutil.copy(favicon, dest_dir / "favicon.svg")
         for path in Path(".src/public").iterdir():  # Deleting the dir itself causes issues with docker
             shutil.copy(path, Path(DESTINATION_DIR))
 
@@ -100,21 +101,27 @@ class SiteGenerator:
             else:
                 path.unlink()
 
-        self.render_gallery("index", self.photos, sorting=OrderMethod.DATE)
+        if self.photos:
+            self.render_gallery("index", self.photos, sorting=OrderMethod.DATE)
+        else:
+            index = PAGES_PATH / "index.md"
+            if not index.is_file():
+                index = Path("example_content/pages/index.md")
+            self.render_markdown_page("index", index)
+
         for path in self.text_paths:
-            if path.stem == "index":
-                continue
-            else:
-                with open(path, "r") as file:
-                    content = file.read()
-                html_content = markdown.markdown(content, output_format="html")
-                self.render_page(path.stem, "main_layout.html", {"content": html_content})
+            if path.stem != "index":
+                self.render_markdown_page(path.stem, path)
 
         for tag in self.tag_organizer.tags:
             self.render_gallery(tag, self.tag_organizer.tags[tag].photos, sorting=OrderMethod.DATE)
 
         if self.show_tags_page:
             self.render_page("tags", "tags_page.html")
+
+    def render_markdown_page(self, title: str, path: Path) -> None:
+        html_content = markdown.markdown(path.read_text(), output_format="html")
+        self.render_page(title, "main_layout.html", {"content": html_content})
 
     def gather_photos(self):
         for image in IMAGES_PATH.iterdir():

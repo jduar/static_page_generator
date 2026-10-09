@@ -13,5 +13,4 @@ __pycache__/
 .mypy_cache/
 .ruff_cache/
 
-example_content/
 images/

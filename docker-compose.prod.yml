@@ -1,5 +1,12 @@
 services:
   generator:
-    build:
-      target: runtime
+    build: .
     image: page-generator
+    container_name: page-generator
+    volumes:
+      - ./data:/app/data
+      - ./public:/app/public
+
+  nginx:
+    depends_on:
+      - generator
