@@ -1,8 +1,4 @@
-.PHONY: dev lint run generate thumbnails
-
-dev: public
-	docker compose up -d
-	uv run watchfiles "python src/main.py" templates static src data/pages
+.PHONY: lint run generate thumbnails
 
 lint:
 	uv run ruff check src

@@ -8,7 +8,8 @@ RUN groupadd --gid 1000 app \
     && useradd --uid 1000 --gid 1000 --create-home app
 
 COPY pyproject.toml uv.lock .python-version ./
-RUN uv sync --frozen --no-dev --no-cache
+ARG UV_SYNC_FLAGS=--no-dev
+RUN uv sync --frozen $UV_SYNC_FLAGS --no-cache
 
 COPY src ./src
 COPY templates ./templates

@@ -34,16 +34,16 @@ $ make thumbnails  # generates thumbnails (smaller sized versions of your photos
 
 ## Development
 
-For development, you're going to need to install [uv](https://docs.astral.sh/uv/). Once you have that, install the virtual environment with
+For development, you're going to need [uv](https://docs.astral.sh/uv/). Once you have that, install the virtual environment with
 
 ```bash
 $ uv sync
 ```
 
-Then running this for development should be as simple as
+Then run the server with
 
 ```bash
-$ make dev
+$ docker compose up --build
 ```
 
 This regenerates the website structure whenever you tweak a template or style and serves it as you go.
