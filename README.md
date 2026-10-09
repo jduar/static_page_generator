@@ -5,7 +5,7 @@ A static photo gallery generator for photographers. See it live at [jduarte.eu](
 ## Running
 
 > [!WARNING]
-> This is meant to be used with actual photo files that contain camera metadata - that metadata is shown along with the photo.
+> This is meant to be used with actual photo files that contain camera metadata - probably won't work well with random images.
 
 Dump your favourite photos in `data/images/`. Add markdown files to `data/pages/` and those files are turned into sections in your gallery.
 
