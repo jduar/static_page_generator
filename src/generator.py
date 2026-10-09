@@ -52,7 +52,7 @@ class SiteGenerator:
         for path in Path(".src/public").iterdir():  # Deleting the dir itself causes issues with docker
             shutil.copy(path, Path(DESTINATION_DIR))
 
-    def render_page(self, title: str, template_name: str, context: dict = {}) -> None:
+    def render_page(self, title: str, template_name: str, context: dict | None = None) -> None:
         template: Template = self.jinja_env.get_template(template_name)
 
         with open(Path(".src") / f"{DESTINATION_DIR}/{title}.html", "w+") as file:
@@ -64,7 +64,7 @@ class SiteGenerator:
                 site_title=settings.TITLE,
                 description=settings.DESCRIPTION,
                 show_tags_page=self.show_tags_page,
-                **context,
+                **(context or {}),
             )
             file.write(html)
 
@@ -123,7 +123,7 @@ class SiteGenerator:
         html_content = markdown.markdown(path.read_text(), output_format="html")
         self.render_page(title, "main_layout.html", {"content": html_content})
 
-    def gather_photos(self):
+    def gather_photos(self) -> None:
         for image in IMAGES_PATH.iterdir():
             if image.suffix.lower() in IMAGE_EXTENSIONS:
                 photo = Photo(image, tag_organizer=self.tag_organizer)

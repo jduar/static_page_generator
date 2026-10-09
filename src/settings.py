@@ -1,5 +1,5 @@
-TITLE="example.xyz"
-DESCRIPTION="An example image gallery"
+TITLE = "example.xyz"
+DESCRIPTION = "An example image gallery"
 
 # If the whitelist is not empty, only tags defined in it be displayed as website sections.
 # Tags defined in the blacklist won't be displayed as website sections. The whitelist takes precedence

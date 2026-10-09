@@ -18,7 +18,7 @@ THUMBNAILS_PATH = Path("data/thumbnails")
 
 
 class Photo:
-    def __init__(self, path: Path, tag_organizer):
+    def __init__(self, path: Path, tag_organizer: "TagOrganizer"):
         self.tags: Set[str] = set()
 
         self.local_path = path  # local path
@@ -41,7 +41,7 @@ class Photo:
         self.focal_length = image_data.get("focal_length")
         self.description = image_data.get("image_description", "")
 
-    def get_tags(self, tag_organizer) -> None:
+    def get_tags(self, tag_organizer: "TagOrganizer") -> None:
         for keyword in IPTCInfo(self.local_path)["keywords"]:
             decoded_keyword = keyword.decode("utf-8")
             tag_organizer.create_or_update_tag(decoded_keyword, self)
@@ -73,7 +73,7 @@ class TagOrganizer:
     def __init__(self):
         self.tags = {}
 
-    def create_or_update_tag(self, keyword: str, photo: Photo):
+    def create_or_update_tag(self, keyword: str, photo: Photo) -> None:
         if keyword not in self.tags:
             self.tags[keyword] = Tag(keyword)
         self.tags[keyword].photos.add(photo)
