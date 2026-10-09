@@ -5,7 +5,7 @@ from typing import Iterable, Set
 import markdown
 from jinja2 import Environment, FileSystemLoader, Template
 
-import settings
+from config import config
 from data import Photo, TagOrganizer
 from utils.sorters import OrderMethod, sort_photos
 
@@ -61,8 +61,8 @@ class SiteGenerator:
                 photo_sections=self.tag_organizer.get_render_tags(),
                 # TODO: Order tags alphabetically
                 photo_tags=self.tag_organizer.tags,
-                site_title=settings.TITLE,
-                description=settings.DESCRIPTION,
+                site_title=config.title,
+                description=config.description,
                 show_tags_page=self.show_tags_page,
                 **(context or {}),
             )
@@ -130,4 +130,4 @@ class SiteGenerator:
 
     @property
     def show_tags_page(self) -> bool:
-        return bool(settings.TAGS_WHITELIST or settings.TAGS_BLACKLIST)
+        return bool(config.tags_whitelist or config.tags_blacklist)

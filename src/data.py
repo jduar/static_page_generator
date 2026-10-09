@@ -8,7 +8,7 @@ from iptcinfo3 import IPTCInfo
 from PIL import Image as PILImage
 from yoga import image
 
-import settings
+from config import config
 
 # Default logging level generates a bunch of IPTC warnings
 iptcinfo_logger = logging.getLogger("iptcinfo")
@@ -79,12 +79,12 @@ class TagOrganizer:
         self.tags[keyword].photos.add(photo)
 
     def get_render_tags(self) -> list[str]:
-        if settings.TAGS_WHITELIST:
-            whitelisted_tags = [tag for tag in settings.TAGS_WHITELIST if self.tags[tag]]
-            if not settings.TAG_CUSTOM_ORDER:
+        if config.tags_whitelist:
+            whitelisted_tags = [tag for tag in config.tags_whitelist if self.tags[tag]]
+            if not config.tags_custom_order:
                 whitelisted_tags = sorted(whitelisted_tags)
             return whitelisted_tags
-        return sorted([tag for tag in self.tags if tag not in settings.TAGS_BLACKLIST])
+        return sorted([tag for tag in self.tags if tag not in config.tags_blacklist])
 
 
 class Tag:

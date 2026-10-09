@@ -15,6 +15,12 @@ If you're unsure how these translate into the website layout, you can find examp
 $ cp -r example_content/* data/
 ```
 
+Create your config file from the example and adjust it to your liking (site title, which tags show up as sections, etc.)
+
+```bash
+$ cp config.example.toml config.toml
+```
+
 Then run the server with
 
 ```bash

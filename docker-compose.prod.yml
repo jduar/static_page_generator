@@ -6,6 +6,7 @@ services:
     volumes:
       - ./data:/app/data
       - ./public:/app/public
+      - ./config.toml:/app/config.toml:ro
 
   nginx:
     depends_on:
