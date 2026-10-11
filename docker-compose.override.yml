@@ -1,0 +1,21 @@
+services:
+  generator:
+    build:
+      context: .
+      args:
+        UV_SYNC_FLAGS: ""
+    image: page-generator-dev
+    container_name: page-generator-dev
+    command: watchfiles "python src/main.py" src templates static data/pages config.toml
+    volumes:
+      - ./data:/app/data
+      - ./public:/app/public
+      - ./config.toml:/app/config.toml:ro
+      - ./src:/app/src
+      - ./templates:/app/templates
+      - ./static:/app/static
+      - ./example_content:/app/example_content
+
+  nginx:
+    depends_on:
+      - generator
