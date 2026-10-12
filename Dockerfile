@@ -12,8 +12,6 @@ ARG UV_SYNC_FLAGS=--no-dev
 RUN uv sync --frozen $UV_SYNC_FLAGS --no-cache
 
 COPY src ./src
-COPY templates ./templates
-COPY static ./static
 COPY example_content ./example_content
 
 RUN chown -R app:app /app

@@ -49,7 +49,7 @@ $ uv sync
 Then run the server with
 
 ```bash
-$ docker compose up --build
+$ docker compose -f docker-compose.dev.yml up --build
 ```
 
 This regenerates the website structure whenever you tweak a template or style and serves it as you go.

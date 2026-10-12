@@ -1,8 +1,19 @@
 services:
+  generator:
+    build: .
+    image: page-generator
+    container_name: page-generator
+    volumes:
+      - ./data:/app/data
+      - ./public:/app/public
+      - ./config.toml:/app/config.toml:ro
+
   nginx:
     image: nginx:stable-alpine
     container_name: page-generator-nginx
     restart: unless-stopped
+    depends_on:
+      - generator
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
       - ./public:/usr/share/nginx/html:ro

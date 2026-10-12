@@ -13,6 +13,8 @@ DESTINATION_DIR = "public"
 IMAGES_PATH = Path("data/images")
 PAGES_PATH = Path("data/pages")
 FAVICON_PATH = Path("data/favicon.svg")
+TEMPLATES_PATH = Path(__file__).parent / "templates"
+STATIC_PATH = Path(__file__).parent / "static"
 
 IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tiff"}
 
@@ -24,7 +26,7 @@ class SiteGenerator:
 
         self.gather_photos()
 
-        self.jinja_env = Environment(loader=FileSystemLoader("templates"), autoescape=True)
+        self.jinja_env = Environment(loader=FileSystemLoader(TEMPLATES_PATH), autoescape=True)
 
         self.text_paths = [page for page in PAGES_PATH.iterdir() if page.suffix.lower() == ".md"]
         self.text_page_names = [path.stem for path in self.text_paths if path.stem != "index"]
@@ -45,8 +47,8 @@ class SiteGenerator:
 
     def copy_content(self) -> None:
         dest_dir = Path(DESTINATION_DIR)
-        shutil.copytree("static/css", dest_dir / "css")
-        shutil.copytree("static/js", dest_dir / "js")
+        shutil.copytree(STATIC_PATH / "css", dest_dir / "css")
+        shutil.copytree(STATIC_PATH / "js", dest_dir / "js")
         favicon = FAVICON_PATH if FAVICON_PATH.is_file() else Path("example_content/favicon.svg")
         shutil.copy(favicon, dest_dir / "favicon.svg")
         for path in Path(".src/public").iterdir():  # Deleting the dir itself causes issues with docker
