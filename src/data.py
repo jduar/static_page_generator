@@ -8,7 +8,7 @@ from iptcinfo3 import IPTCInfo
 from PIL import Image as PILImage
 from yoga import image
 
-import settings
+from config import config
 
 # Default logging level generates a bunch of IPTC warnings
 iptcinfo_logger = logging.getLogger("iptcinfo")
@@ -18,7 +18,7 @@ THUMBNAILS_PATH = Path("data/thumbnails")
 
 
 class Photo:
-    def __init__(self, path: Path, tag_organizer):
+    def __init__(self, path: Path, tag_organizer: "TagOrganizer"):
         self.tags: Set[str] = set()
 
         self.local_path = path  # local path
@@ -41,7 +41,7 @@ class Photo:
         self.focal_length = image_data.get("focal_length")
         self.description = image_data.get("image_description", "")
 
-    def get_tags(self, tag_organizer) -> None:
+    def get_tags(self, tag_organizer: "TagOrganizer") -> None:
         for keyword in IPTCInfo(self.local_path)["keywords"]:
             decoded_keyword = keyword.decode("utf-8")
             tag_organizer.create_or_update_tag(decoded_keyword, self)
@@ -73,18 +73,18 @@ class TagOrganizer:
     def __init__(self):
         self.tags = {}
 
-    def create_or_update_tag(self, keyword: str, photo: Photo):
+    def create_or_update_tag(self, keyword: str, photo: Photo) -> None:
         if keyword not in self.tags:
             self.tags[keyword] = Tag(keyword)
         self.tags[keyword].photos.add(photo)
 
     def get_render_tags(self) -> list[str]:
-        if settings.TAGS_WHITELIST:
-            whitelisted_tags = [tag for tag in settings.TAGS_WHITELIST if self.tags[tag]]
-            if not settings.TAG_CUSTOM_ORDER:
+        if config.tags_whitelist:
+            whitelisted_tags = [tag for tag in config.tags_whitelist if self.tags[tag]]
+            if not config.tags_custom_order:
                 whitelisted_tags = sorted(whitelisted_tags)
             return whitelisted_tags
-        return sorted([tag for tag in self.tags if tag not in settings.TAGS_BLACKLIST])
+        return sorted([tag for tag in self.tags if tag not in config.tags_blacklist])
 
 
 class Tag:

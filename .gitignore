@@ -1,5 +1,6 @@
 public/
 .src/
+config.toml
 
 data/**
 !data/
@@ -169,5 +170,5 @@ cython_debug/
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,python
 
-# Environment-specific production compose tweaks
+# Local compose overrides
 docker-compose.override.yml

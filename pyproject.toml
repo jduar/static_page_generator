@@ -1,3 +1,23 @@
+[project]
+name = "static-page-generator"
+version = "0.1.0"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "exif==1.6.0",
+    "IPTCInfo3==2.1.4",
+    "Jinja2==3.1.2",
+    "Markdown==3.11",
+    "MarkupSafe==2.1.2",
+    "Pillow==12.3.0",
+    "yoga==1.3.4",
+]
+
+[dependency-groups]
+dev = [
+    "watchfiles==1.2.0",
+    "ruff==0.16.10",
+]
+
 [tool.ruff]
 # Exclude a variety of commonly ignored directories.
 exclude = [
@@ -27,14 +47,11 @@ exclude = [
 # Same as Black.
 line-length = 120
 
-# Assume Python 3.10.
-target-version = "py310"
-
 [tool.ruff.lint]
 # pycodestyle (`E`), Pyflakes (`F`), flake8-bugbear, isort
 select = ["E", "F", "B", "I", "PL", "S", "ANN", "W"]
 
-ignore = ["ANN204", "ANN101"]
+ignore = ["ANN204"]
 
 # Allow autofix for all enabled rules (when `--fix`) is provided.
 fixable = ["A", "B", "C", "D", "E", "F", "G", "I", "N", "Q", "S", "T", "W", "ANN", "ARG", "BLE", "COM", "DJ", "DTZ", "EM", "ERA", "EXE", "FBT", "ICN", "INP", "ISC", "NPY", "PD", "PGH", "PIE", "PL", "PT", "PTH", "PYI", "RET", "RSE", "RUF", "SIM", "SLF", "TCH", "TID", "TRY", "UP", "YTT"]
@@ -44,4 +61,4 @@ unfixable = []
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 
 [tool.ruff.format]
-skip-magic-trailing-comma = true
+skip-magic-trailing-comma = false

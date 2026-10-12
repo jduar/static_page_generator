@@ -2,33 +2,69 @@
 
 A static photo gallery generator for photographers. See it live at [jduarte.eu](https://jduarte.eu).
 
-## How to
+## Running
 
-Run for the first time with
+> [!WARNING]
+> This is meant to be used with actual photo files that contain camera metadata - probably won't work well with random images.
 
+Dump your favourite photos in `data/images/`. Add markdown files to `data/pages/` and those files are turned into sections in your gallery.
+
+If you're unsure how these translate into the website layout, you can find example content in `example_content/`. Copy it with
+
+```bash
+$ cp -r example_content/* data/
 ```
-$ make first-run
+
+Create your config file from the example and adjust it to your liking (site title, which tags show up as sections, etc.)
+
+```bash
+$ cp config.example.toml config.toml
 ```
 
-This will spin up a basic page using example content at http://localhost:8080.
+Then run the server with
 
-You can then replace the content over at `data` with your own (following the existent folder structure) and re-run with
-
-```
+```bash
 $ make run
 ```
 
-Running this for development should be as simple as
+Your gallery is now available at http://localhost:8080.
 
+You can then replace the content over at `data` with your own.
+
+Other commands that might come in handy:
+
+```bash
+$ make generate  # fully regenerates the website structure
+$ make thumbnails  # generates thumbnails (smaller sized versions of your photos that show up on the index)
 ```
-$ make dev
+
+## Development
+
+For development, you're going to need [uv](https://docs.astral.sh/uv/). Once you have that, install the virtual environment with
+
+```bash
+$ uv sync
+```
+
+Then run the server with
+
+```bash
+$ docker compose -f docker-compose.dev.yml up --build
 ```
 
 This regenerates the website structure whenever you tweak a template or style and serves it as you go.
 
+Use
+
+```bash
+$ uv run python src/main.py -h
+```
+
+to see available commands.
+
 ## How it works
 
-The generator currently has two generating behaviours: text pages and image galleries.
+The generator has two generating behaviours: text pages and image galleries.
 
 Text pages are HTML pages converted from Markdown documents. These should be stored inside the `data/pages` directory. See the `about.md` document for an example.
 

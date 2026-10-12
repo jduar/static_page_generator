@@ -1,0 +1,12 @@
+title = "example.xyz"
+description = "An example image gallery"
+
+[tags]
+# If the whitelist is not empty, only tags defined in it will be displayed as website sections.
+# Tags defined in the blacklist won't be displayed as website sections. The whitelist takes precedence
+# over the blacklist. If both are empty, all tags will be displayed as website sections.
+# Example usage: whitelist = ["cat", "dog"]
+whitelist = []
+blacklist = []
+# By default, tags are ordered alphabetically. Set custom_order to true to follow the order in the whitelist.
+custom_order = false

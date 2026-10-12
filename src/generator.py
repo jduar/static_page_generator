@@ -5,7 +5,7 @@ from typing import Iterable, Set
 import markdown
 from jinja2 import Environment, FileSystemLoader, Template
 
-import settings
+from config import config
 from data import Photo, TagOrganizer
 from utils.sorters import OrderMethod, sort_photos
 
@@ -13,6 +13,8 @@ DESTINATION_DIR = "public"
 IMAGES_PATH = Path("data/images")
 PAGES_PATH = Path("data/pages")
 FAVICON_PATH = Path("data/favicon.svg")
+TEMPLATES_PATH = Path(__file__).parent / "templates"
+STATIC_PATH = Path(__file__).parent / "static"
 
 IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tiff"}
 
@@ -24,7 +26,7 @@ class SiteGenerator:
 
         self.gather_photos()
 
-        self.jinja_env = Environment(loader=FileSystemLoader("templates"), autoescape=True)
+        self.jinja_env = Environment(loader=FileSystemLoader(TEMPLATES_PATH), autoescape=True)
 
         self.text_paths = [page for page in PAGES_PATH.iterdir() if page.suffix.lower() == ".md"]
         self.text_page_names = [path.stem for path in self.text_paths if path.stem != "index"]
@@ -45,13 +47,14 @@ class SiteGenerator:
 
     def copy_content(self) -> None:
         dest_dir = Path(DESTINATION_DIR)
-        shutil.copytree("static/css", dest_dir / "css")
-        shutil.copytree("static/js", dest_dir / "js")
-        shutil.copy(FAVICON_PATH, dest_dir / "favicon.svg")
+        shutil.copytree(STATIC_PATH / "css", dest_dir / "css")
+        shutil.copytree(STATIC_PATH / "js", dest_dir / "js")
+        favicon = FAVICON_PATH if FAVICON_PATH.is_file() else Path("example_content/favicon.svg")
+        shutil.copy(favicon, dest_dir / "favicon.svg")
         for path in Path(".src/public").iterdir():  # Deleting the dir itself causes issues with docker
             shutil.copy(path, Path(DESTINATION_DIR))
 
-    def render_page(self, title: str, template_name: str, context: dict = {}) -> None:
+    def render_page(self, title: str, template_name: str, context: dict | None = None) -> None:
         template: Template = self.jinja_env.get_template(template_name)
 
         with open(Path(".src") / f"{DESTINATION_DIR}/{title}.html", "w+") as file:
@@ -60,10 +63,10 @@ class SiteGenerator:
                 photo_sections=self.tag_organizer.get_render_tags(),
                 # TODO: Order tags alphabetically
                 photo_tags=self.tag_organizer.tags,
-                site_title=settings.TITLE,
-                description=settings.DESCRIPTION,
+                site_title=config.title,
+                description=config.description,
                 show_tags_page=self.show_tags_page,
-                **context,
+                **(context or {}),
             )
             file.write(html)
 
@@ -100,23 +103,28 @@ class SiteGenerator:
             else:
                 path.unlink()
 
-        self.render_gallery("index", self.photos, sorting=OrderMethod.DATE)
+        if self.photos:
+            self.render_gallery("index", self.photos, sorting=OrderMethod.DATE)
+        else:
+            index = PAGES_PATH / "index.md"
+            if not index.is_file():
+                index = Path("example_content/pages/index.md")
+            self.render_markdown_page("index", index)
+
         for path in self.text_paths:
-            if path.stem == "index":
-                continue
-            else:
-                with open(path, "r") as file:
-                    content = file.read()
-                html_content = markdown.markdown(content, output_format="html")
-                self.render_page(path.stem, "main_layout.html", {"content": html_content})
+            if path.stem != "index":
+                self.render_markdown_page(path.stem, path)
 
         for tag in self.tag_organizer.tags:
             self.render_gallery(tag, self.tag_organizer.tags[tag].photos, sorting=OrderMethod.DATE)
 
-        if self.show_tags_page:
-            self.render_page("tags", "tags_page.html")
+        self.render_page("tags", "tags_page.html")
 
-    def gather_photos(self):
+    def render_markdown_page(self, title: str, path: Path) -> None:
+        html_content = markdown.markdown(path.read_text(), output_format="html")
+        self.render_page(title, "main_layout.html", {"content": html_content})
+
+    def gather_photos(self) -> None:
         for image in IMAGES_PATH.iterdir():
             if image.suffix.lower() in IMAGE_EXTENSIONS:
                 photo = Photo(image, tag_organizer=self.tag_organizer)
@@ -124,4 +132,4 @@ class SiteGenerator:
 
     @property
     def show_tags_page(self) -> bool:
-        return bool(settings.TAGS_WHITELIST or settings.TAGS_BLACKLIST)
+        return bool(config.tags_whitelist or config.tags_blacklist)

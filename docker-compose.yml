@@ -1,16 +1,12 @@
 services:
   generator:
-    build:
-      context: .
-      target: dev
-    image: page-generator-dev
+    build: .
+    image: page-generator
     container_name: page-generator
     volumes:
       - ./data:/app/data
-      - ./templates:/app/templates
-      - ./static:/app/static
-      - ./src:/app/src
       - ./public:/app/public
+      - ./config.toml:/app/config.toml:ro
 
   nginx:
     image: nginx:stable-alpine
