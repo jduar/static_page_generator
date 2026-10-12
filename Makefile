@@ -1,8 +1,5 @@
 .PHONY: lint run generate thumbnails
 
-lint:
-	uv run ruff check src
-
 run: public
 	docker compose up --build -d
 
@@ -14,3 +11,6 @@ thumbnails: public
 
 public:
 	mkdir -p public
+
+lint:
+	uv run ruff check src
